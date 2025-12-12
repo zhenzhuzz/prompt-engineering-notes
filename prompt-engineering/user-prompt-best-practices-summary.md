@@ -4,6 +4,15 @@
 > **Purpose**: 让 User Prompt 更高效、更清晰、更省 Token
 > **Core Insight**: 系统提示词的结构化技巧同样适用于用户提示词
 
+## 🚀 常用 Git 操作快捷跳转
+
+| 操作 | 跳转链接 |
+|------|----------|
+| Git Commit + Push | [示例 6: run git commit push](#示例-6-run-git-commit-push) |
+| 创建 PR | [示例 7: create pr in simplified chinese](#示例-7-create-pr-in-simplified-chinese) |
+| 新建分支 + 提交 | [示例 8: create branch and commit push](#示例-8-create-branch-and-commit-push) |
+| 切换并拉取分支 | [示例 9: switch to main and pull](#示例-9-switch-to-main-and-pull) |
+
 ---
 
 ## The Essence
@@ -286,7 +295,7 @@ KNOW 格式 markdown，参考 @claude-system-prompt-engineering-summary.md
 
 ---
 
-### 示例 6: 极简指令
+### 示例 6: run git commit push
 
 **Before (旧范式)**:
 ```
@@ -304,6 +313,7 @@ run git commit push
 <requirements>
 - commit title 和 description 用简体中文
 - 详细汇总所有更改（便于日后回顾）
+- 鼓励用详细的文字描述更改分析和总结，用详细的ASCII diagram加上各组件描述布局、逻辑、结构树、流程等, 用icon增加趣味性和美观度
 </requirements>
 ```
 
@@ -314,20 +324,10 @@ run git commit push
 | 缺少 git add 步骤 | 补全完整流程 |
 | 无法知道 commit 什么 | 明确期望（生成提交信息）|
 
-**更完整版本（如需特定要求）**:
-```xml
-<task>提交并推送当前更改</task>
-
-<requirements>
-- commit title 和 description 用简体中文
-- 详细汇总所有更改（便于日后回顾）
-- 鼓励用ASCII diagram, icon, 和详细的文字描述
-</requirements>
-```
 
 ---
 
-### 示例 7: 创建 PR
+### 示例 7: create pr in simplified chinese
 
 **Before (旧范式)**:
 ```
@@ -341,7 +341,7 @@ create pr and write title and body in details for all recent changes in simplifi
 <requirements>
 - 标题和描述用简体中文
 - 详细描述所有最近的更改
-- 鼓励用ASCII diagram, icon, 和详细的文字描述
+- 鼓励用详细的文字描述更改分析和总结，用详细的ASCII diagram加上各组件描述布局、逻辑、结构树、流程等, 用icon增加趣味性和美观度
 </requirements>
 ```
 
@@ -354,7 +354,7 @@ create pr and write title and body in details for all recent changes in simplifi
 
 ---
 
-### 示例 8: 创建分支 + 提交（带交互确认）
+### 示例 8: create branch and commit push
 
 **Before (旧范式)**:
 ```
@@ -365,10 +365,11 @@ switch to this new branch, and run git add commit push
 **After (新范式)**:
 ```xml
 <task>
-1. 提供 3 个分支命名建议（格式: feature/YYYY-MM-DD-xxx）
-2. 等我确认后再继续
-3. 创建并切换到新分支
-4. git add → commit → push
+1. 创建新分支
+2. 提供 3 个分支命名建议（格式: xxx/xxxxx-YYYY-MM-DD）
+3. 等我确认后再继续
+4. 创建并切换到新分支
+5. git add → commit → push
 </task>
 
 <requirements>
@@ -386,7 +387,7 @@ switch to this new branch, and run git add commit push
 
 ---
 
-### 示例 9: 拉取并切换分支
+### 示例 9: switch to main and pull
 
 **Before (旧范式)**:
 ```
