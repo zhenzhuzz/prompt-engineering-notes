@@ -336,7 +336,7 @@ create pr and write title and body in details for all recent changes in simplifi
 
 **After (新范式)**:
 ```xml
-<task>创建 Pull Request</task>
+<task>创建新的 Pull Request</task>
 
 <requirements>
 - 标题和描述用简体中文
@@ -376,6 +376,10 @@ switch to this new branch, and run git add commit push
 - 分支名包含日期
 - 先确认再执行
 </requirements>
+
+<branch-name-context>
+我今天的工作是收集第四五六个维度的评分的小红书视频素材
+</branch-name-context>
 ```
 
 **改进点**:
