@@ -19,11 +19,11 @@ type/description-YYYY-MM-DD
 
 | Type | 说明 | 示例 |
 |------|------|------|
-| feature | 新功能 | feature/boost-recommendation-2025-12-19 |
-| fix | Bug 修复 | fix/mcq-video-loading-2025-12-19 |
+| feature | 新功能 | feature/user-auth-2025-12-19 |
+| fix | Bug 修复 | fix/login-error-2025-12-19 |
 | refactor | 重构 | refactor/api-structure-2025-12-19 |
-| docs | 文档 | docs/mcq-guide-2025-12-19 |
-| chore | 杂项 | chore/cleanup-unused-files-2025-12-19 |
+| docs | 文档 | docs/readme-update-2025-12-19 |
+| chore | 杂项 | chore/cleanup-2025-12-19 |
 
 ## 输出格式
 

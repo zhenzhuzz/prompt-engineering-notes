@@ -1,0 +1,24 @@
+{
+  "topics": [
+    {
+      "name": "Gemini 3 Flash",
+      "query": "Google Gemini 3 Flash benchmark API pricing SWE-bench coding December 2025",
+      "description": "Google 最新发布的 Gemini 3 Flash 模型 (2025-12-17)，比 2.5 Pro 更强且快 3 倍，SWE-bench 78%，定价 $0.50/1M input tokens"
+    },
+    {
+      "name": "MMPose RTMW3D Pose Estimation",
+      "query": "MMPose RTMW3D-L 3D pose estimation sports analysis climbing motion tutorial 2025",
+      "description": "OpenMMLab 的 MMPose 框架，特别是 RTMW3D-L 模型用于 3D 姿态估计。应用场景包括运动分析（如攀岩动作识别、腰部与墙壁距离分析）、实时人体追踪、动作可视化分析"
+    },
+    {
+      "name": "MCP Best Practices",
+      "query": "Claude Code MCP Model Context Protocol best practices server configuration 2025",
+      "description": "Claude Code 的 MCP (Model Context Protocol) 最佳实践，包括常用服务器配置、集成方法、实战技巧"
+    },
+    {
+      "name": "Claude Code Skills and Agents",
+      "query": "Claude Code skills agents slash commands custom workflow automation SKILL.md 2025",
+      "description": "Claude Code 的扩展体系：Slash Commands (/xxx)、Skills (自动激活能力包)、Sub-Agents (独立上下文代理) 的区别、创建方法和最佳实践，如何构建自动化工作流"
+    }
+  ]
+}
