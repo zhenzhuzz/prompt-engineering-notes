@@ -6,8 +6,27 @@
 # 功能: 自动研究 research-topics.json 中的主题，生成快速概览和深度报告
 # ============================================================================
 
-# Windows Git Bash 配置
-export CLAUDE_CODE_GIT_BASH_PATH='D:\Git\bin\bash.exe'
+# Windows Git Bash 配置 (必须使用双反斜杠，因为 Claude CLI 对带空格路径+正斜杠的验证有 Bug)
+export CLAUDE_CODE_GIT_BASH_PATH="C:\\Program Files\\Git\\bin\\bash.exe"
+
+# 强制 UTF-8 编码 (避免 Windows GBK 与 Claude CLI UTF-8 输出混合导致乱码)
+export PYTHONIOENCODING=utf-8
+export LANG=en_US.UTF-8
+
+# 调试模式 (设置 DEBUG=1 启用详细输出)
+DEBUG="${DEBUG:-0}"
+# API 重试次数
+MAX_RETRIES="${MAX_RETRIES:-3}"
+# 重试间隔 (秒)
+RETRY_DELAY="${RETRY_DELAY:-30}"
+
+# 调试输出函数
+debug_log() {
+    if [ "$DEBUG" = "1" ]; then
+        local timestamp=$(date "+%Y-%m-%d %H:%M:%S")
+        echo -e "${YELLOW}[DEBUG] [$timestamp] $1${NC}"
+    fi
+}
 
 # 获取日期 (可通过参数覆盖)
 DATE="${1:-$(date +%Y-%m-%d)}"
@@ -16,6 +35,14 @@ DATE="${1:-$(date +%Y-%m-%d)}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 DATE_FOLDER="$PROJECT_ROOT/$DATE"
+
+# Git Bash 路径转 Windows 路径 (/d/... -> d:/...)
+to_win_path() {
+    echo "$1" | sed 's|^/\([a-zA-Z]\)/|\1:/|'
+}
+
+# Python 使用的路径 (Windows 格式)
+TOPICS_FILE_WIN="$(to_win_path "$DATE_FOLDER/research-topics.json")"
 TOPICS_FILE="$DATE_FOLDER/research-topics.json"
 QUICK_OUTPUT_DIR="$DATE_FOLDER/output/quick"
 DEEP_OUTPUT_DIR="$DATE_FOLDER/output/deep"
@@ -71,6 +98,11 @@ show_banner() {
     echo -e "${CYAN}  ║   睡前启动 → 自动研究 → 醒来看结果                            ║${NC}"
     echo -e "${CYAN}  ╚═══════════════════════════════════════════════════════════════╝${NC}"
     echo ""
+    if [ "$DEBUG" = "1" ]; then
+        echo -e "${YELLOW}  [DEBUG MODE 已启用]${NC}"
+        echo -e "${YELLOW}  MAX_RETRIES=$MAX_RETRIES | RETRY_DELAY=${RETRY_DELAY}s${NC}"
+        echo ""
+    fi
 }
 
 # 初始化目录
@@ -111,7 +143,7 @@ EOF
     return 0
 }
 
-# 执行研究任务
+# 执行研究任务 (带重试逻辑)
 do_research() {
     local topic_name="$1"
     local query="$2"
@@ -134,41 +166,119 @@ do_research() {
         prompt="$meta_prefix$prompt"
     fi
 
-    local start_time=$(date +%s)
+    debug_log "Prompt 模板: $prompt_template"
+    debug_log "Prompt 长度: ${#prompt} 字符"
 
-    # 调用 Claude CLI (Headless Mode)
-    local result=$(claude -p "$prompt" \
-        --allowedTools "WebSearch,WebFetch,Read,Write,Glob,Grep" \
-        --output-format json 2>&1)
+    local attempt=0
+    local success=false
 
-    local exit_code=$?
-    local end_time=$(date +%s)
-    local duration=$((end_time - start_time))
-    local duration_min=$(python -c "print(round($duration / 60, 1))")
+    while [ $attempt -lt $MAX_RETRIES ] && [ "$success" = "false" ]; do
+        ((attempt++))
 
-    if [ $exit_code -eq 0 ]; then
-        # 用 Python 提取 result 字段
-        python -c "
+        if [ $attempt -gt 1 ]; then
+            log "WARN" "重试第 $attempt 次 (共 $MAX_RETRIES 次): $topic_name"
+            log "INFO" "等待 $RETRY_DELAY 秒后重试..."
+            sleep $RETRY_DELAY
+        fi
+
+        local start_time=$(date +%s)
+
+        # 使用临时文件避免变量嵌入破坏 Python 语法
+        local temp_result=$(mktemp)
+        debug_log "临时文件: $temp_result"
+
+        log "INFO" "调用 Claude CLI... (尝试 $attempt/$MAX_RETRIES)"
+
+        # 调用 Claude CLI (Headless Mode)，输出到临时文件
+        claude -p "$prompt" \
+            --allowedTools "WebSearch,WebFetch,Read,Write,Glob,Grep" \
+            --output-format json > "$temp_result" 2>&1
+
+        local exit_code=$?
+        local end_time=$(date +%s)
+        local duration=$((end_time - start_time))
+        local duration_min=$(python -c "print(round($duration / 60, 1))")
+
+        debug_log "Claude CLI 退出码: $exit_code"
+        debug_log "耗时: ${duration_min} 分钟"
+        debug_log "临时文件大小: $(wc -c < "$temp_result") 字节"
+
+        # 检查临时文件内容
+        local temp_result_win=$(to_win_path "$temp_result")
+        local result_preview=$(head -c 200 "$temp_result" 2>/dev/null)
+        debug_log "输出预览: ${result_preview:0:100}..."
+
+        # 检查是否是 API 连接错误 (需要重试)
+        if grep -q "API Error: Connection error" "$temp_result" 2>/dev/null; then
+            log "WARN" "API 连接错误 (尝试 $attempt/$MAX_RETRIES)"
+            rm -f "$temp_result"
+            continue
+        fi
+
+        # 检查是否是速率限制错误 (需要更长等待)
+        if grep -q -i "rate.limit\|too.many.requests\|429" "$temp_result" 2>/dev/null; then
+            log "WARN" "API 速率限制 (尝试 $attempt/$MAX_RETRIES)，等待 60 秒..."
+            rm -f "$temp_result"
+            sleep 60
+            continue
+        fi
+
+        if [ $exit_code -eq 0 ]; then
+            # 用 Python 读取临时文件并提取 result 字段
+            python -c "
 import json
 import sys
+with open('$temp_result_win', 'r', encoding='utf-8') as f:
+    content = f.read()
 try:
-    data = json.loads('''$result''')
+    data = json.loads(content)
+    # 检查是否有 API 错误
+    if data.get('is_error', False):
+        error_msg = data.get('result', 'Unknown error')
+        print(f'API returned error: {error_msg}', file=sys.stderr)
+        sys.exit(2)
     if 'result' in data and data['result']:
         print(data['result'])
     else:
-        print('''$result''')
-except:
-    print('''$result''')
-" > "$output_file"
+        print(content)
+        sys.exit(1)
+except Exception as e:
+    print(f'JSON parse error: {e}', file=sys.stderr)
+    print(content)
+    sys.exit(1)
+" > "$output_file" 2>"${output_file}.stderr"
 
-        if [ -s "$output_file" ]; then
-            log "SUCCESS" "$research_type 完成: $topic_name (耗时 ${duration_min} 分钟)"
-            return 0
+            local python_exit=$?
+            debug_log "Python 退出码: $python_exit"
+
+            if [ $python_exit -eq 0 ] && [ -s "$output_file" ]; then
+                log "SUCCESS" "$research_type 完成: $topic_name (耗时 ${duration_min} 分钟)"
+                rm -f "$temp_result" "${output_file}.stderr"
+                success=true
+                return 0
+            elif [ $python_exit -eq 2 ]; then
+                # API 返回了错误，可能需要重试
+                local stderr_msg=$(cat "${output_file}.stderr" 2>/dev/null)
+                log "WARN" "API 返回错误: $stderr_msg"
+                rm -f "${output_file}.stderr"
+            else
+                debug_log "Python 处理失败，stderr: $(cat "${output_file}.stderr" 2>/dev/null)"
+            fi
         fi
-    fi
 
-    log "ERROR" "$research_type 失败: $topic_name"
-    echo "$result" > "${output_file}.error.log"
+        # 如果还有重试机会，不立即失败
+        if [ $attempt -lt $MAX_RETRIES ]; then
+            debug_log "准备重试..."
+            rm -f "$temp_result"
+        else
+            # 最后一次尝试也失败了
+            log "ERROR" "$research_type 失败: $topic_name (已重试 $MAX_RETRIES 次)"
+            cp "$temp_result" "${output_file}.error.log"
+            rm -f "$temp_result" "${output_file}.stderr"
+            return 1
+        fi
+    done
+
     return 1
 }
 
@@ -191,7 +301,7 @@ main() {
     local meta_instruction=""
     local meta_info=$(python -c "
 import json
-with open('$TOPICS_FILE', 'r', encoding='utf-8') as f:
+with open('$TOPICS_FILE_WIN', 'r', encoding='utf-8') as f:
     data = json.load(f)
 meta = data.get('meta', {})
 if meta:
@@ -236,7 +346,7 @@ $instruction
     # 读取主题数量 (使用 Python)
     local topic_count=$(python -c "
 import json
-with open('$TOPICS_FILE', 'r', encoding='utf-8') as f:
+with open('$TOPICS_FILE_WIN', 'r', encoding='utf-8') as f:
     data = json.load(f)
 print(len(data['topics']))
 ")
@@ -260,7 +370,7 @@ print(len(data['topics']))
         # 用 Python 读取主题信息
         local topic_info=$(python -c "
 import json
-with open('$TOPICS_FILE', 'r', encoding='utf-8') as f:
+with open('$TOPICS_FILE_WIN', 'r', encoding='utf-8') as f:
     data = json.load(f)
 topic = data['topics'][$i]
 print(topic['name'])
