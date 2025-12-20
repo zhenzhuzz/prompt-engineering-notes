@@ -119,6 +119,7 @@ do_research() {
     local prompt_template="$4"
     local output_file="$5"
     local research_type="$6"
+    local meta_prefix="$7"
 
     log "INFO" "开始 $research_type: $topic_name"
 
@@ -127,6 +128,11 @@ do_research() {
     prompt="${prompt//\{\{TOPIC\}\}/$topic_name}"
     prompt="${prompt//\{\{QUERY\}\}/$query}"
     prompt="${prompt//\{\{DESCRIPTION\}\}/$description}"
+
+    # 添加 meta 指令前缀 (如果有)
+    if [[ -n "$meta_prefix" ]]; then
+        prompt="$meta_prefix$prompt"
+    fi
 
     local start_time=$(date +%s)
 
@@ -181,6 +187,52 @@ main() {
         return 1
     fi
 
+    # 读取 meta 配置 (如果存在)
+    local meta_instruction=""
+    local meta_info=$(python -c "
+import json
+with open('$TOPICS_FILE', 'r', encoding='utf-8') as f:
+    data = json.load(f)
+meta = data.get('meta', {})
+if meta:
+    reader_bg = meta.get('reader_background', '')
+    know_tpl = meta.get('know_template', '')
+    instruction = meta.get('instruction', '')
+    print(f'READER_BG={reader_bg}')
+    print(f'KNOW_TPL={know_tpl}')
+    print(f'INSTRUCTION={instruction}')
+else:
+    print('NO_META')
+" 2>/dev/null)
+
+    if [[ "$meta_info" != "NO_META" ]]; then
+        local reader_bg=$(echo "$meta_info" | grep "^READER_BG=" | cut -d= -f2-)
+        local know_tpl=$(echo "$meta_info" | grep "^KNOW_TPL=" | cut -d= -f2-)
+        local instruction=$(echo "$meta_info" | grep "^INSTRUCTION=" | cut -d= -f2-)
+
+        if [[ -n "$instruction" ]]; then
+            # 构建 meta 指令前缀
+            meta_instruction="## 全局指令
+
+$instruction
+
+"
+            if [[ -n "$reader_bg" ]]; then
+                meta_instruction+="**读者背景文件**: $DATE_FOLDER/$reader_bg (请先读取了解读者专业背景)
+"
+            fi
+            if [[ -n "$know_tpl" ]]; then
+                meta_instruction+="**KNOW 模板文件**: $DATE_FOLDER/$know_tpl (请按此格式撰写)
+"
+            fi
+            meta_instruction+="
+---
+
+"
+            log "INFO" "已加载 meta 配置 (读者背景 + KNOW 模板)"
+        fi
+    fi
+
     # 读取主题数量 (使用 Python)
     local topic_count=$(python -c "
 import json
@@ -229,7 +281,7 @@ print(topic.get('description', topic['name']))
 
         # 快速概览
         local quick_file="$QUICK_OUTPUT_DIR/${safe_name}-quick.md"
-        if do_research "$name" "$query" "$description" "$QUICK_PROMPT_TEMPLATE" "$quick_file" "快速概览"; then
+        if do_research "$name" "$query" "$description" "$QUICK_PROMPT_TEMPLATE" "$quick_file" "快速概览" "$meta_instruction"; then
             ((completed++))
         else
             ((failed++))
@@ -241,7 +293,7 @@ print(topic.get('description', topic['name']))
 
         # 深度报告
         local deep_file="$DEEP_OUTPUT_DIR/${safe_name}-deep.md"
-        if do_research "$name" "$query" "$description" "$DEEP_PROMPT_TEMPLATE" "$deep_file" "深度报告"; then
+        if do_research "$name" "$query" "$description" "$DEEP_PROMPT_TEMPLATE" "$deep_file" "深度报告" "$meta_instruction"; then
             ((completed++))
         else
             ((failed++))
