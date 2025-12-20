@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "reader_background": "../../ZhenZhu-Background.md",
+    "know_template": "../../_templates/KNOW_知识提取文档编写指南.md",
+    "instruction": "撰写前请先读取 reader_background 了解读者专业背景（清华机械硕士、振动信号处理、1D CNN、ABB机器人、近期从事前端开发与AI网球教练），再按 know_template 格式撰写 KNOW 文档。解释新概念时用读者熟悉的类比，同时确保读者能学习新术语(jargon)。"
+  },
+  "topics": [
+    {
+      "name": "Gemini 3 Flash",
+      "query": "Google Gemini 3 Flash benchmark API pricing SWE-bench coding December 2025",
+      "description": "Google 最新发布的 Gemini 3 Flash 模型 (2025-12-17)，比 2.5 Pro 更强且快 3 倍，SWE-bench 78%，定价 $0.50/1M input tokens。类比：大模型版本迭代如同机床主轴升级——更高转速(推理速度)、更大扭矩(能力)、更低能耗(成本)"
+    },
+    {
+      "name": "MMPose RTMW3D Pose Estimation",
+      "query": "MMPose RTMW3D-L 3D pose estimation sports analysis climbing motion tutorial 2025",
+      "description": "OpenMMLab 的 MMPose 框架，RTMW3D-L 模型用于 3D 姿态估计。应用场景：运动分析（网球挥拍、攀岩动作）、实时人体追踪。类比：姿态估计如同振动传感器采集人体关节'时域信号'，再通过神经网络提取'频域特征'(关节角度、速度)"
+    },
+    {
+      "name": "MCP Best Practices",
+      "query": "Claude Code MCP Model Context Protocol best practices server configuration 2025",
+      "description": "Claude Code 的 MCP (Model Context Protocol) 最佳实践。类比：MCP 如同 ROS 的 Topic/Service 机制——标准化 AI 与外部工具的通信协议，实现模块化、可扩展的工具调用架构"
+    },
+    {
+      "name": "Claude Code Skills and Agents",
+      "query": "Claude Code skills agents slash commands custom workflow automation SKILL.md 2025",
+      "description": "Claude Code 扩展体系：Slash Commands (/xxx)、Skills (自动激活能力包)、Sub-Agents (独立上下文代理)。类比：如同机器人系统的分层控制——Slash Commands 是手动触发指令，Skills 是条件触发的控制策略，Sub-Agents 是独立运行的子控制器"
+    },
+    {
+      "name": "Claude Code MCP Bash Tools Architecture",
+      "query": "Claude Code MCP bash shell tool implementation vs OpenAI Codex vs Gemini CLI agentic coding 2025",
+      "description": "Claude Code 的 MCP 架构如何实现 Bash 工具调用，与 OpenAI Codex、Gemini CLI 对比。类比：三者如同不同的机器人控制架构——Claude Code 是开放式 ROS 生态，Codex 是封闭式专用控制器，Gemini CLI 是新进入者的混合方案"
+    },
+    {
+      "name": "SIGGRAPH Asia 2025 Tencent AI Graphics",
+      "query": "SIGGRAPH Asia 2025 Tencent Imaginarium VISVISE MagicDawn differentiable rendering SPGen RL-ACD neural graphics game AI December 2025",
+      "description": "【额外参考】原文: ./腾讯AI+游戏.md。腾讯游戏在 SIGGRAPH Asia 2025 发布的 AI+图形学技术：(1) Imaginarium - 类比：振动信号→表面形貌的逆向推理；(2) VISVISE 动画管线 - 类比：机器人运动学正逆解；(3) 可微渲染 - 类比：基于梯度的参数辨识；(4) SPGen 球面投影 - 类比：坐标变换；(5) MagicDawn 光照 - 类比：传递函数；(6) 运动重定向 0.13ms - 类比：实时颤振检测；(7) RL-ACD - 类比：强化学习优化；(8) StereoFG 4x效率"
+    }
+  ]
+}

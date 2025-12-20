@@ -19,6 +19,11 @@
       "name": "Claude Code Skills and Agents",
       "query": "Claude Code skills agents slash commands custom workflow automation SKILL.md 2025",
       "description": "Claude Code 的扩展体系：Slash Commands (/xxx)、Skills (自动激活能力包)、Sub-Agents (独立上下文代理) 的区别、创建方法和最佳实践，如何构建自动化工作流"
+    },
+    {
+      "name": "Claude Code MCP Bash Tools Architecture",
+      "query": "Claude Code MCP bash shell tool implementation vs OpenAI Codex vs Gemini CLI agentic coding 2025",
+      "description": "Claude Code 的 MCP 架构如何实现 Bash 工具调用：技术实现原理、与 OpenAI Codex 的对比（为何领先）、与 Gemini CLI 的功能差异、对 Agentic Coding 的意义和行业影响"
     }
   ]
 }
