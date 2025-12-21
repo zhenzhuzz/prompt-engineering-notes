@@ -36,9 +36,17 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 DATE_FOLDER="$PROJECT_ROOT/$DATE"
 
-# Git Bash 路径转 Windows 路径 (/d/... -> d:/...)
+# Git Bash 路径转 Windows 路径 (处理所有情况，使用正斜杠避免 Python 转义问题)
 to_win_path() {
-    echo "$1" | sed 's|^/\([a-zA-Z]\)/|\1:/|'
+    local path="$1"
+    # 优先使用 cygpath -m (混合模式: C:/... 而非 C:\...)
+    # -m 输出正斜杠，避免 Python 把 \U 当作 unicode 转义
+    if command -v cygpath &>/dev/null; then
+        cygpath -m "$path"
+    else
+        # 标准 /d/... -> d:/... 转换
+        echo "$path" | sed 's|^/\([a-zA-Z]\)/|\1:/|'
+    fi
 }
 
 # Python 使用的路径 (Windows 格式)
@@ -188,11 +196,25 @@ do_research() {
         debug_log "临时文件: $temp_result"
 
         log "INFO" "调用 Claude CLI... (尝试 $attempt/$MAX_RETRIES)"
+        log "INFO" "⏳ 研究任务预计需要 2-5 分钟，请耐心等待..."
+
+        # 后台显示进度点 (每 30 秒一个点)
+        (
+            while true; do
+                sleep 30
+                echo -n "." >&2
+            done
+        ) &
+        local progress_pid=$!
 
         # 调用 Claude CLI (Headless Mode)，输出到临时文件
         claude -p "$prompt" \
             --allowedTools "WebSearch,WebFetch,Read,Write,Glob,Grep" \
             --output-format json > "$temp_result" 2>&1
+
+        # 停止进度显示
+        kill $progress_pid 2>/dev/null
+        echo "" >&2
 
         local exit_code=$?
         local end_time=$(date +%s)
@@ -208,62 +230,96 @@ do_research() {
         local result_preview=$(head -c 200 "$temp_result" 2>/dev/null)
         debug_log "输出预览: ${result_preview:0:100}..."
 
-        # 检查是否是 API 连接错误 (需要重试)
-        if grep -q "API Error: Connection error" "$temp_result" 2>/dev/null; then
-            log "WARN" "API 连接错误 (尝试 $attempt/$MAX_RETRIES)"
-            rm -f "$temp_result"
-            continue
-        fi
-
-        # 检查是否是速率限制错误 (需要更长等待)
-        if grep -q -i "rate.limit\|too.many.requests\|429" "$temp_result" 2>/dev/null; then
-            log "WARN" "API 速率限制 (尝试 $attempt/$MAX_RETRIES)，等待 60 秒..."
-            rm -f "$temp_result"
-            sleep 60
-            continue
-        fi
-
         if [ $exit_code -eq 0 ]; then
             # 用 Python 读取临时文件并提取 result 字段
+            # 错误检测也在 Python 中进行，避免 grep 匹配正文内容导致误判
+            # 退出码: 0=成功, 1=解析失败, 2=API错误, 3=速率限制, 4=连接错误
             python -c "
 import json
 import sys
+import re
+
 with open('$temp_result_win', 'r', encoding='utf-8') as f:
     content = f.read()
+
 try:
     data = json.loads(content)
-    # 检查是否有 API 错误
+
+    # 检查是否有 API 错误 (只检查 is_error 字段，不检查正文)
     if data.get('is_error', False):
-        error_msg = data.get('result', 'Unknown error')
-        print(f'API returned error: {error_msg}', file=sys.stderr)
+        error_msg = str(data.get('result', 'Unknown error')).lower()
+
+        # 检查连接错误
+        if 'connection error' in error_msg:
+            print('CONNECTION_ERROR', file=sys.stderr)
+            sys.exit(4)
+
+        # 检查速率限制 (只在 is_error=true 时检查)
+        if any(x in error_msg for x in ['rate limit', 'rate_limit', 'too many requests', '429']):
+            print('RATE_LIMIT', file=sys.stderr)
+            sys.exit(3)
+
+        # 其他 API 错误
+        print(f'API_ERROR: {error_msg}', file=sys.stderr)
         sys.exit(2)
+
+    # 成功情况：提取 result 字段
     if 'result' in data and data['result']:
         print(data['result'])
     else:
         print(content)
         sys.exit(1)
+
+except json.JSONDecodeError as e:
+    # JSON 解析失败，可能是非 JSON 输出
+    print(f'JSON_PARSE_ERROR: {e}', file=sys.stderr)
+    print(content)
+    sys.exit(1)
 except Exception as e:
-    print(f'JSON parse error: {e}', file=sys.stderr)
+    print(f'UNKNOWN_ERROR: {e}', file=sys.stderr)
     print(content)
     sys.exit(1)
 " > "$output_file" 2>"${output_file}.stderr"
 
             local python_exit=$?
-            debug_log "Python 退出码: $python_exit"
+            local stderr_msg=$(cat "${output_file}.stderr" 2>/dev/null)
+            debug_log "Python 退出码: $python_exit, stderr: $stderr_msg"
 
-            if [ $python_exit -eq 0 ] && [ -s "$output_file" ]; then
-                log "SUCCESS" "$research_type 完成: $topic_name (耗时 ${duration_min} 分钟)"
-                rm -f "$temp_result" "${output_file}.stderr"
-                success=true
-                return 0
-            elif [ $python_exit -eq 2 ]; then
-                # API 返回了错误，可能需要重试
-                local stderr_msg=$(cat "${output_file}.stderr" 2>/dev/null)
-                log "WARN" "API 返回错误: $stderr_msg"
-                rm -f "${output_file}.stderr"
-            else
-                debug_log "Python 处理失败，stderr: $(cat "${output_file}.stderr" 2>/dev/null)"
-            fi
+            case $python_exit in
+                0)
+                    # 成功
+                    if [ -s "$output_file" ]; then
+                        log "SUCCESS" "$research_type 完成: $topic_name (耗时 ${duration_min} 分钟)"
+                        rm -f "$temp_result" "${output_file}.stderr"
+                        success=true
+                        return 0
+                    else
+                        debug_log "输出文件为空"
+                    fi
+                    ;;
+                3)
+                    # 速率限制
+                    log "WARN" "API 速率限制 (尝试 $attempt/$MAX_RETRIES)，等待 60 秒..."
+                    rm -f "$temp_result" "${output_file}.stderr" "$output_file"
+                    sleep 60
+                    continue
+                    ;;
+                4)
+                    # 连接错误
+                    log "WARN" "API 连接错误 (尝试 $attempt/$MAX_RETRIES)"
+                    rm -f "$temp_result" "${output_file}.stderr" "$output_file"
+                    continue
+                    ;;
+                2)
+                    # 其他 API 错误
+                    log "WARN" "API 返回错误: $stderr_msg"
+                    rm -f "${output_file}.stderr"
+                    ;;
+                *)
+                    # 解析失败或未知错误
+                    debug_log "Python 处理失败: $stderr_msg"
+                    ;;
+            esac
         fi
 
         # 如果还有重试机会，不立即失败
@@ -367,7 +423,7 @@ print(len(data['topics']))
 
     # 遍历主题 (使用 Python 生成循环)
     for i in $(seq 0 $((topic_count - 1))); do
-        # 用 Python 读取主题信息
+        # 用 Python 读取主题信息 (包括测试标志)
         local topic_info=$(python -c "
 import json
 with open('$TOPICS_FILE_WIN', 'r', encoding='utf-8') as f:
@@ -376,17 +432,25 @@ topic = data['topics'][$i]
 print(topic['name'])
 print(topic['query'])
 print(topic.get('description', topic['name']))
+print('1' if topic.get('_skip_deep', False) else '0')
+print('1' if topic.get('_test', False) else '0')
 ")
 
         # 解析输出
         local name=$(echo "$topic_info" | sed -n '1p')
         local query=$(echo "$topic_info" | sed -n '2p')
         local description=$(echo "$topic_info" | sed -n '3p')
+        local skip_deep=$(echo "$topic_info" | sed -n '4p')
+        local is_test=$(echo "$topic_info" | sed -n '5p')
         local safe_name=$(echo "$name" | sed 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]')
 
         echo ""
         echo -e "${CYAN}═══════════════════════════════════════════════════════════════${NC}"
-        log "INFO" "处理主题 $((i+1))/$topic_count: $name"
+        if [ "$is_test" = "1" ]; then
+            log "INFO" "🧪 测试主题 $((i+1))/$topic_count: $name"
+        else
+            log "INFO" "处理主题 $((i+1))/$topic_count: $name"
+        fi
         echo -e "${CYAN}═══════════════════════════════════════════════════════════════${NC}"
 
         # 快速概览
@@ -397,16 +461,20 @@ print(topic.get('description', topic['name']))
             ((failed++))
         fi
 
-        # 等待避免 rate limit
-        log "INFO" "等待 30 秒..."
-        sleep 30
-
-        # 深度报告
-        local deep_file="$DEEP_OUTPUT_DIR/${safe_name}-deep.md"
-        if do_research "$name" "$query" "$description" "$DEEP_PROMPT_TEMPLATE" "$deep_file" "深度报告" "$meta_instruction"; then
-            ((completed++))
+        # 深度报告 (除非设置了 _skip_deep)
+        if [ "$skip_deep" = "1" ]; then
+            log "INFO" "跳过深度报告 (测试模式)"
         else
-            ((failed++))
+            # 等待避免 rate limit
+            log "INFO" "等待 30 秒..."
+            sleep 30
+
+            local deep_file="$DEEP_OUTPUT_DIR/${safe_name}-deep.md"
+            if do_research "$name" "$query" "$description" "$DEEP_PROMPT_TEMPLATE" "$deep_file" "深度报告" "$meta_instruction"; then
+                ((completed++))
+            else
+                ((failed++))
+            fi
         fi
 
         # 主题间等待

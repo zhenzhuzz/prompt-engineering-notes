@@ -6,6 +6,13 @@
   },
   "topics": [
     {
+      "name": "[TEST] Pipeline Smoke Test",
+      "query": "Claude Code CLI headless mode 2025",
+      "description": "【冒烟测试】验证 Auto-Research 管道是否正常工作。这是一个简单的测试主题，用于快速验证：(1) Claude CLI 能否成功调用 (2) WebSearch 工具是否正常 (3) 输出文件是否正确生成。预期耗时 < 1 分钟。",
+      "_test": true,
+      "_skip_deep": true
+    },
+    {
       "name": "Gemini 3 Flash",
       "query": "Google Gemini 3 Flash benchmark API pricing SWE-bench coding December 2025",
       "description": "Google 最新发布的 Gemini 3 Flash 模型 (2025-12-17)，比 2.5 Pro 更强且快 3 倍，SWE-bench 78%，定价 $0.50/1M input tokens。类比：大模型版本迭代如同机床主轴升级——更高转速(推理速度)、更大扭矩(能力)、更低能耗(成本)"

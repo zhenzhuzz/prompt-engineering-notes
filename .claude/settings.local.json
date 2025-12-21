@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git branch:*)",
+      "Bash(gh pr create:*)",
+      "Bash(git stash:*)",
+      "Bash(git add:*)",
+      "Bash(git push:*)",
+      "Bash(tree:*)",
+      "Bash(git fetch:*)",
+      "Bash(gh pr edit:*)",
+      "Bash(git commit:*)",
+      "Bash(ls -la \"d:\\410_VibeCoding\\Yoach\\301_tennis-forehand-rubrics\\webapp-v5-api\\assets\\videos\\0_tutorial\"\" 2>/dev/null || dir \"d:410_VibeCodingYoach301_tennis-forehand-rubricswebapp-v5-apiassetsvideos0_tutorial\"\")",
+      "Bash(node:*)",
+      "Bash(git pull:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(python:*)",
+      "Bash(echo:*)",
+      "Bash(cmd //c \"dir \"\"C:\\\\Program Files\\\\Git\\\\bin\\\\bash.exe\"\"\")",
+      "Bash(claude --version)",
+      "Bash(cat:*)",
+      "Bash(env)",
+      "Bash(powershell -Command \"Test-Path ''C:/Program Files/Git/bin/bash.exe''\")",
+      "Bash(powershell:*)",
+      "Bash(claude config list:*)",
+      "Bash(CLAUDE_CODE_GIT_BASH_PATH='C:/Program Files/Git/bin/bash.exe' claude -p \"Say hello\" --output-format json)",
+      "Bash(CLAUDE_CODE_GIT_BASH_PATH='C:\\\\Program Files\\\\Git\\\\bin\\\\bash.exe' claude -p \"Say hello\" --output-format json)",
+      "Bash(CLAUDE_CODE_GIT_BASH_PATH=\"C:\\\\Program Files\\\\Git\\\\bin\\\\bash.exe\" claude -p \"Say hello\" --output-format json)",
+      "Bash(export CLAUDE_CODE_GIT_BASH_PATH=\"C:\\\\Program Files\\\\Git\\\\bin\\\\bash.exe\")",
+      "Bash(claude -p:*)",
+      "Bash(xxd:*)",
+      "Bash(bash -n:*)",
+      "Bash(time claude:*)"
+    ]
+  }
+}
