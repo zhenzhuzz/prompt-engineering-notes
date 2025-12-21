@@ -215,20 +215,20 @@ function Start-Research {
         Write-Status "处理主题: $name"
         Write-Host "═══════════════════════════════════════════════════════════════" -ForegroundColor Cyan
 
-        # 快速概览
-        $quickFile = Join-Path $QuickOutputDir "$safeName-quick.md"
-        $quickResult = Invoke-Research `
-            -TopicName $name `
-            -Query $query `
-            -Description $description `
-            -PromptTemplate $quickTemplate `
-            -OutputFile $quickFile `
-            -ResearchType "快速概览"
-
-        # 等待一下，避免 rate limit
-        Write-Status "等待 30 秒..."
-        Start-Sleep -Seconds 30
-
+        # [DISABLED]         # 快速概览
+        # [DISABLED]         $quickFile = Join-Path $QuickOutputDir "$safeName-quick.md"
+        # [DISABLED]         $quickResult = Invoke-Research `
+        # [DISABLED]             -TopicName $name `
+        # [DISABLED]             -Query $query `
+        # [DISABLED]             -Description $description `
+        # [DISABLED]             -PromptTemplate $quickTemplate `
+        # [DISABLED]             -OutputFile $quickFile `
+        # [DISABLED]             -ResearchType "快速概览"
+        # [DISABLED] 
+        # [DISABLED]         # 等待一下，避免 rate limit
+        # [DISABLED]         Write-Status "等待 30 秒..."
+        # [DISABLED]         Start-Sleep -Seconds 30
+        # [DISABLED] 
         # 深度报告
         $deepFile = Join-Path $DeepOutputDir "$safeName-deep.md"
         $deepResult = Invoke-Research `
@@ -239,7 +239,7 @@ function Start-Research {
             -OutputFile $deepFile `
             -ResearchType "深度报告"
 
-        if ($quickResult -and $deepResult) {
+        if ($deepResult) {
             $completed++
         } else {
             $failed++

@@ -453,22 +453,18 @@ print('1' if topic.get('_test', False) else '0')
         fi
         echo -e "${CYAN}═══════════════════════════════════════════════════════════════${NC}"
 
-        # 快速概览
-        local quick_file="$QUICK_OUTPUT_DIR/${safe_name}-quick.md"
-        if do_research "$name" "$query" "$description" "$QUICK_PROMPT_TEMPLATE" "$quick_file" "快速概览" "$meta_instruction"; then
-            ((completed++))
-        else
-            ((failed++))
-        fi
+        # ============ 快速概览 (已禁用 - Quick 对 Deep 无帮助) ============
+        # local quick_file="$QUICK_OUTPUT_DIR/${safe_name}-quick.md"
+        # if do_research "$name" "$query" "$description" "$QUICK_PROMPT_TEMPLATE" "$quick_file" "快速概览" "$meta_instruction"; then
+        #     ((completed++))
+        # else
+        #     ((failed++))
+        # fi
 
         # 深度报告 (除非设置了 _skip_deep)
         if [ "$skip_deep" = "1" ]; then
             log "INFO" "跳过深度报告 (测试模式)"
         else
-            # 等待避免 rate limit
-            log "INFO" "等待 30 秒..."
-            sleep 30
-
             local deep_file="$DEEP_OUTPUT_DIR/${safe_name}-deep.md"
             if do_research "$name" "$query" "$description" "$DEEP_PROMPT_TEMPLATE" "$deep_file" "深度报告" "$meta_instruction"; then
                 ((completed++))
