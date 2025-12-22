@@ -19,6 +19,10 @@ from typing import Dict, List, Tuple, Any
 VAULT_ROOT = Path(__file__).parent.parent
 CARDS_DIR = VAULT_ROOT / "cards"
 EVIDENCE_DIR = VAULT_ROOT / "evidence"
+KNOW_DIR = VAULT_ROOT / "know"
+
+# Type enum for typed assets (optional field, warn if missing/invalid)
+TYPE_ENUM = ["tech_blog", "interview", "company_research", "debug_playbook", "other"]
 
 # Required fields and valid enums
 CARD_REQUIRED_FIELDS = [
@@ -234,6 +238,53 @@ def validate_evidence(filepath: Path) -> List[str]:
 
 
 # ============================================================================
+# Warning Validators (non-blocking)
+# ============================================================================
+
+def get_card_warnings(filepath: Path, metadata: Dict[str, Any]) -> List[str]:
+    """Get warnings for a card (non-blocking). Returns list of warnings."""
+    warnings = []
+
+    # Check type field
+    if 'type' not in metadata:
+        warnings.append("missing type field")
+    elif metadata['type'] not in TYPE_ENUM:
+        warnings.append(f"invalid type='{metadata['type']}' (expected: {TYPE_ENUM})")
+
+    return warnings
+
+
+def get_evidence_warnings(filepath: Path, metadata: Dict[str, Any]) -> List[str]:
+    """Get warnings for evidence (non-blocking). Returns list of warnings."""
+    warnings = []
+
+    # Check type field
+    if 'type' not in metadata:
+        warnings.append("missing type field")
+    elif metadata['type'] not in TYPE_ENUM:
+        warnings.append(f"invalid type='{metadata['type']}' (expected: {TYPE_ENUM})")
+
+    return warnings
+
+
+def validate_know(filepath: Path) -> Tuple[List[str], List[str]]:
+    """Validate a Know doc. Returns (errors, warnings)."""
+    errors = []
+    warnings = []
+
+    try:
+        content = filepath.read_text(encoding='utf-8')
+    except Exception as e:
+        return [f"Cannot read file: {e}"], []
+
+    # Heuristic: Know docs should reference at least one CARD
+    if 'CARD-' not in content:
+        warnings.append("no CARD references found (Know docs should assemble cards)")
+
+    return errors, warnings
+
+
+# ============================================================================
 # Main
 # ============================================================================
 
@@ -245,8 +296,10 @@ def main():
     print()
 
     all_errors: List[Tuple[str, List[str]]] = []
+    all_warnings: List[Tuple[str, List[str]]] = []
     total_cards = 0
     total_evidence = 0
+    total_know = 0
 
     # Validate cards
     print("Validating cards...")
@@ -254,9 +307,25 @@ def main():
         for card_file in sorted(CARDS_DIR.glob("*.md")):
             total_cards += 1
             errors = validate_card(card_file)
+
+            # Get warnings (need to re-parse metadata)
+            warnings = []
+            try:
+                content = card_file.read_text(encoding='utf-8')
+                metadata, success = extract_yaml_frontmatter(content)
+                if success:
+                    warnings = get_card_warnings(card_file, metadata)
+            except Exception:
+                pass
+
             if errors:
                 all_errors.append((str(card_file.relative_to(VAULT_ROOT)), errors))
                 print(f"  [FAIL] {card_file.name}")
+            elif warnings:
+                all_warnings.append((str(card_file.relative_to(VAULT_ROOT)), warnings))
+                print(f"  [OK] {card_file.name}")
+                for w in warnings:
+                    print(f"    [WARN] {w}")
             else:
                 print(f"  [OK] {card_file.name}")
     else:
@@ -270,21 +339,63 @@ def main():
         for evi_file in sorted(EVIDENCE_DIR.glob("*.yml")):
             total_evidence += 1
             errors = validate_evidence(evi_file)
+
+            # Get warnings (need to re-parse metadata)
+            warnings = []
+            try:
+                content = evi_file.read_text(encoding='utf-8')
+                metadata = parse_yaml_simple(content)
+                warnings = get_evidence_warnings(evi_file, metadata)
+            except Exception:
+                pass
+
             if errors:
                 all_errors.append((str(evi_file.relative_to(VAULT_ROOT)), errors))
                 print(f"  [FAIL] {evi_file.name}")
+            elif warnings:
+                all_warnings.append((str(evi_file.relative_to(VAULT_ROOT)), warnings))
+                print(f"  [OK] {evi_file.name}")
+                for w in warnings:
+                    print(f"    [WARN] {w}")
             else:
                 print(f"  [OK] {evi_file.name}")
     else:
         print("  (no evidence directory)")
 
     print()
+
+    # Validate know docs
+    print("Validating know docs...")
+    if KNOW_DIR.exists():
+        for know_file in sorted(KNOW_DIR.glob("*.md")):
+            total_know += 1
+            errors, warnings = validate_know(know_file)
+
+            if errors:
+                all_errors.append((str(know_file.relative_to(VAULT_ROOT)), errors))
+                print(f"  [FAIL] {know_file.name}")
+            elif warnings:
+                all_warnings.append((str(know_file.relative_to(VAULT_ROOT)), warnings))
+                print(f"  [OK] {know_file.name}")
+                for w in warnings:
+                    print(f"    [WARN] {w}")
+            else:
+                print(f"  [OK] {know_file.name}")
+    else:
+        print("  (no know directory)")
+
+    print()
     print("=" * 60)
+
+    # Count total warnings
+    total_warning_count = sum(len(ws) for _, ws in all_warnings)
 
     # Summary
     if all_errors:
         print("RESULT: FAIL")
         print(f"Found {len(all_errors)} file(s) with errors")
+        if total_warning_count > 0:
+            print(f"Warnings: {total_warning_count}")
         print()
         print("ERRORS:")
         for filepath, errors in all_errors:
@@ -295,8 +406,9 @@ def main():
         sys.exit(1)
     else:
         print("RESULT: PASS")
-        print(f"Validated {total_cards} card(s) and {total_evidence} evidence file(s)")
-        print()
+        print(f"Validated {total_cards} card(s), {total_evidence} evidence file(s), {total_know} know doc(s)")
+        if total_warning_count > 0:
+            print(f"Warnings: {total_warning_count}")
         sys.exit(0)
 
 
