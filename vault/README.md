@@ -47,6 +47,12 @@ vault/evidence/EVI-YYYYMMDD-XXXX.yml
 
 模板: `vault/templates/evidence.meta.template.yml`
 
+**分型模板** (根据 `type` 选择):
+- `evidence.tech_blog.meta.template.yml` — 技术博客
+- `evidence.interview.meta.template.yml` — 访谈/播客
+- `evidence.company_research.meta.template.yml` — 公司调研
+- `evidence.debug_playbook.meta.template.yml` — 调试手册
+
 ### 2. 创建 Card（卡片）
 
 ```bash
@@ -54,6 +60,12 @@ vault/cards/CARD-YYYYMMDD-XXXX.md
 ```
 
 模板: `vault/templates/card.template.md`
+
+**分型模板** (根据 `type` 选择):
+- `card.tech_blog.template.md` — 技术博客卡片
+- `card.interview.template.md` — 访谈卡片
+- `card.company_research.template.md` — 公司调研卡片
+- `card.debug_playbook.template.md` — 调试手册卡片
 
 每张 Card 必须：
 - 包含完整的 YAML front matter

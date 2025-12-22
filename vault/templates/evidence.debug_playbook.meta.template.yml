@@ -1,0 +1,38 @@
+# Evidence 元数据模板 - debug_playbook 类型
+# 复制此文件并重命名为: EVI-YYYYMMDD-XXXX.yml
+# 用于记录调试过程中的环境、症状、复现步骤等原始证据
+
+id: EVI-YYYYMMDD-XXXX
+type: debug_playbook
+captured_at: YYYY-MM-DD
+source_type: note  # web | video | pdf | note | code | other
+source: "./EVI-YYYYMMDD-XXXX.note.md"  # 调试笔记或日志文件
+title: "[问题简述]"
+author: "[调试者]"
+license: public  # unknown | public | restricted
+sha256: ""  # 可选：日志/截图等文件的哈希值
+sensitivity: internal  # public | internal | private
+notes: |
+  ## 环境信息 (Environment)
+  - OS：
+  - Shell/Terminal：
+  - 编码：
+  - 仓库/项目：
+  - 工具版本：
+
+  ## 症状 (Symptom)
+  [描述观察到的异常现象]
+
+  ## 复现步骤 (Reproduction Steps)
+  1.
+  2.
+  3.
+
+  ## 预期 vs 实际 (Expected vs Actual)
+  - 预期结果：
+  - 实际结果：
+
+  ## 日志/产物指针 (Logs/Artifacts)
+  - 日志文件：
+  - 截图：
+  - 其他产物：

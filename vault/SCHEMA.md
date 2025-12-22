@@ -13,6 +13,7 @@ Card 是带有 YAML front matter 的 Markdown 文件。
 | 字段 | 类型 | 必需 | 说明 |
 |------|------|------|------|
 | `id` | string | 是 | 格式: `CARD-YYYYMMDD-XXXX` |
+| `type` | enum | 否 | `tech_blog` \| `interview` \| `company_research` \| `debug_playbook` \| `other`（分型资产） |
 | `status` | enum | 是 | `draft` \| `validated` \| `deprecated` |
 | `created_at` | date | 是 | 格式: `YYYY-MM-DD` |
 | `last_verified_at` | date | 是 | 格式: `YYYY-MM-DD` |
@@ -45,6 +46,7 @@ Evidence 元数据文件描述采集的来源。
 | 字段 | 类型 | 必需 | 说明 |
 |------|------|------|------|
 | `id` | string | 是 | 格式: `EVI-YYYYMMDD-XXXX` |
+| `type` | enum | 否 | `tech_blog` \| `interview` \| `company_research` \| `debug_playbook` \| `other`（分型资产） |
 | `captured_at` | date | 是 | 格式: `YYYY-MM-DD` |
 | `source_type` | enum | 是 | `web` \| `video` \| `pdf` \| `note` \| `code` \| `other` |
 | `source` | string | 是 | URL 或本地路径 |

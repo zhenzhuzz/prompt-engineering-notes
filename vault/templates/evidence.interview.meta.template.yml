@@ -1,0 +1,20 @@
+# Evidence 元数据模板 - interview 类型
+# 复制此文件并重命名为: EVI-YYYYMMDD-XXXX.yml
+
+id: EVI-YYYYMMDD-XXXX
+type: interview
+captured_at: YYYY-MM-DD
+source_type: video  # web | video | pdf | note | code | other
+source: "https://..."  # 访谈视频/音频/文字稿 URL
+title: "[访谈标题]"
+author: "[受访者/采访者]"
+license: unknown  # unknown | public | restricted
+sha256: ""  # 可选：本地存档文件的哈希值
+sensitivity: public  # public | internal | private
+notes: |
+  [访谈背景与上下文]
+  - 受访者：
+  - 采访者/平台：
+  - 访谈日期：
+  - 核心话题：
+  - 时间戳定位格式：#ts:MM:SS-MM:SS#speaker:<name>

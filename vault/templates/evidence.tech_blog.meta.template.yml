@@ -1,0 +1,19 @@
+# Evidence 元数据模板 - tech_blog 类型
+# 复制此文件并重命名为: EVI-YYYYMMDD-XXXX.yml
+
+id: EVI-YYYYMMDD-XXXX
+type: tech_blog
+captured_at: YYYY-MM-DD
+source_type: web  # web | video | pdf | note | code | other
+source: "https://..."  # 博客原文 URL
+title: "[博客标题]"
+author: "[作者]"
+license: unknown  # unknown | public | restricted
+sha256: ""  # 可选：本地存档文件的哈希值
+sensitivity: public  # public | internal | private
+notes: |
+  [采集背景与上下文]
+  - 发布日期：
+  - 核心主题：
+  - 关键技术栈：
+  - 是否有代码示例：
