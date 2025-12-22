@@ -4,7 +4,7 @@ status: draft
 created_at: YYYY-MM-DD
 last_verified_at: YYYY-MM-DD
 confidence: low
-scope: "[Short description of what this card covers]"
+scope: "[简述本卡片涵盖的内容]"
 tags:
   - tag1
   - tag2
@@ -12,17 +12,17 @@ sensitivity: public
 evidence_refs:
   - EVI-YYYYMMDD-XXXX
 sources:
-  - "[Optional: URL or reference]"
+  - "[可选：来源 URL 或引用]"
 ---
 
 ## Claim
 
-[State the atomic claim this card makes. One clear, verifiable statement.]
+[陈述本卡片的原子主张。一个清晰、可验证的陈述。]
 
 ## Evidence
 
-[Summarize the supporting evidence. Reference the evidence IDs listed above.]
+[总结支持证据。引用上方 `evidence_refs` 中列出的 Evidence ID。]
 
 ## Transferable Rule
 
-[Generalize the claim into a principle that applies beyond this specific case.]
+[将主张泛化为适用于更广泛场景的原则。]

@@ -1,120 +1,124 @@
-# Knowledge Asset Vault
+# 知识资产库 (Knowledge Asset Vault)
 
-> Auditable, evidence-based knowledge management.
+> 可审计、证据驱动的知识管理系统。
+
+**写作规范:** 参见 [STYLE.md](STYLE.md)
 
 ---
 
-## Directory Structure
+## 目录结构
 
 ```
 vault/
-├── evidence/     # Raw sources + snapshots (append-only)
-├── cards/        # Atomic claim–evidence assets
-├── know/         # Human-readable syntheses (reference cards only)
-├── schema/       # Reserved for future schema files
-├── ledger/       # Generated audit reports
-├── publish/      # Rebuilt exports for external use
-├── templates/    # Templates for creating new assets
-└── tools/        # Validation and utility scripts
+├── evidence/     # Evidence（证据）：原始来源，追加式存储
+├── cards/        # Card（卡片）：原子主张-证据资产
+├── know/         # Know Doc（知识文档）：综合卡片，仅引用
+├── schema/       # 预留给未来 schema 文件
+├── ledger/       # Ledger（账本）：审计报告
+├── publish/      # 发布输出，可重建
+├── templates/    # 模板文件
+└── tools/        # 验证脚本
 ```
 
-## Core Documents
+## 核心文档
 
-- [CONTRACT.md](CONTRACT.md) - Hard rules (sovereignty, evidence-first, etc.)
-- [SCHEMA.md](SCHEMA.md) - Field definitions for cards and evidence
+- [CONTRACT.md](CONTRACT.md) — 硬规则（主权、证据优先等）
+- [SCHEMA.md](SCHEMA.md) — Card 和 Evidence 的字段定义
+- [STYLE.md](STYLE.md) — 中英文混排规范
 
 ---
 
-## Day-1 Workflow
+## 工作流程
 
 ```
 Evidence → Cards → Know → Validate
+  证据   →  卡片  → 知识文档 → 验证
 ```
 
-### 1. Capture Evidence
+### 1. 采集 Evidence（证据）
 
 ```bash
-# Create evidence content
-vault/evidence/EVI-YYYYMMDD-XXXX.note.md   # or .pdf, .png, etc.
+# 创建证据内容文件
+vault/evidence/EVI-YYYYMMDD-XXXX.note.md   # 或 .pdf, .png 等
 
-# Create metadata file
+# 创建元数据文件
 vault/evidence/EVI-YYYYMMDD-XXXX.yml
 ```
 
-Use template: `vault/templates/evidence.meta.template.yml`
+模板: `vault/templates/evidence.meta.template.yml`
 
-### 2. Create Cards
+### 2. 创建 Card（卡片）
 
 ```bash
 vault/cards/CARD-YYYYMMDD-XXXX.md
 ```
 
-Use template: `vault/templates/card.template.md`
+模板: `vault/templates/card.template.md`
 
-Each card must:
-- Have YAML front matter with all required fields
-- Reference at least one evidence ID
-- Include Claim, Evidence, and Transferable Rule sections
+每张 Card 必须：
+- 包含完整的 YAML front matter
+- 引用至少一条 Evidence（通过 `evidence_refs`）
+- 包含 Claim、Evidence、Transferable Rule 三个部分
 
-### 3. Write Know Docs
+### 3. 撰写 Know Doc（知识文档）
 
 ```bash
 vault/know/KNOW-YYYYMMDD-descriptor.md
 ```
 
-Use template: `vault/templates/know.template.md`
+模板: `vault/templates/know.template.md`
 
-Know docs:
-- Synthesize multiple cards into readable narratives
-- **Only reference existing CARD IDs** — no new claims
-- Provide context and connections
+Know Doc 规则：
+- 综合多张 Card 形成可读叙述
+- **只引用已有 CARD IDs** — 不引入新主张
+- 提供上下文和关联
 
-### 4. Validate
+### 4. 验证
 
 ```bash
 python vault/tools/validate_vault.py
 ```
 
-Checks:
-- All cards have required YAML fields
-- Status and confidence enums are valid
-- Each card has at least one evidence_ref
-- All evidence metadata files have required fields
+检查项：
+- 所有 Card 具有必需的 YAML 字段
+- `status` 和 `confidence` 枚举值有效
+- 每张 Card 至少有一条 `evidence_ref`
+- 所有 Evidence 元数据文件具有必需字段
 
 ---
 
-## Quick Commands
+## 快速命令
 
 ```bash
-# Validate all assets
+# 验证所有资产
 python vault/tools/validate_vault.py
 
-# List all cards
+# 列出所有 Card
 ls vault/cards/
 
-# List all evidence
+# 列出所有 Evidence
 ls vault/evidence/*.yml
 ```
 
 ---
 
-## Adding New Assets
+## 新增资产指南
 
-### New Evidence
-1. Copy `vault/templates/evidence.meta.template.yml`
-2. Rename to `vault/evidence/EVI-YYYYMMDD-XXXX.yml`
-3. Fill in metadata fields
-4. Add source file if local (same base name, different extension)
+### 新增 Evidence
+1. 复制 `vault/templates/evidence.meta.template.yml`
+2. 重命名为 `vault/evidence/EVI-YYYYMMDD-XXXX.yml`
+3. 填写元数据字段
+4. 如有本地文件，使用相同的基础名（不同扩展名）
 
-### New Card
-1. Copy `vault/templates/card.template.md`
-2. Rename to `vault/cards/CARD-YYYYMMDD-XXXX.md`
-3. Fill in YAML front matter
-4. Write Claim, Evidence, Transferable Rule sections
-5. Run validation
+### 新增 Card
+1. 复制 `vault/templates/card.template.md`
+2. 重命名为 `vault/cards/CARD-YYYYMMDD-XXXX.md`
+3. 填写 YAML front matter
+4. 撰写 Claim、Evidence、Transferable Rule 三部分
+5. 运行验证
 
-### New Know Doc
-1. Copy `vault/templates/know.template.md`
-2. Rename to `vault/know/KNOW-YYYYMMDD-descriptor.md`
-3. Reference only existing CARD IDs
-4. No new claims — synthesis only
+### 新增 Know Doc
+1. 复制 `vault/templates/know.template.md`
+2. 重命名为 `vault/know/KNOW-YYYYMMDD-descriptor.md`
+3. 只引用已有的 CARD IDs
+4. 不引入新主张 — 仅综合已有内容

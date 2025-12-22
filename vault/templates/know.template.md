@@ -1,6 +1,6 @@
 ---
 id: KNOW-YYYYMMDD-descriptor
-title: "[Title of this synthesis]"
+title: "[综合文档标题]"
 created_at: YYYY-MM-DD
 last_updated_at: YYYY-MM-DD
 sensitivity: public
@@ -12,36 +12,36 @@ tags:
   - tag2
 ---
 
-# [Title]
+# [标题]
 
-> One-paragraph summary of the key insight from synthesizing the referenced cards.
+> 一段话总结综合所引用卡片得出的核心洞见。
 
-## Context
+## 背景
 
-[Background and why this synthesis matters.]
+[为什么这个综合重要，背景信息。]
 
-## Key Insights
+## 核心洞见
 
-### [Insight 1 from CARD-YYYYMMDD-XXXX]
+### [来自 CARD-YYYYMMDD-XXXX 的洞见]
 
-[Explain the insight. Reference the card ID.]
+[解释该洞见。引用卡片 ID。]
 
-### [Insight 2 from CARD-YYYYMMDD-YYYY]
+### [来自 CARD-YYYYMMDD-YYYY 的洞见]
 
-[Explain the insight. Reference the card ID.]
+[解释该洞见。引用卡片 ID。]
 
-## Connections
+## 关联
 
-[How do these cards relate to each other? What patterns emerge?]
+[这些卡片之间如何关联？有什么规律？]
 
-## Application
+## 应用
 
-[How to apply these insights. Practical guidance.]
+[如何应用这些洞见。实用指导。]
 
 ---
 
-**Referenced Cards:**
+**引用的卡片：**
 - CARD-YYYYMMDD-XXXX
 - CARD-YYYYMMDD-YYYY
 
-> Note: This document synthesizes existing cards. No new claims are made here.
+> **重要：** 本文档仅综合已有卡片，不引入新主张。所有声明必须可追溯到引用的 CARD ID。

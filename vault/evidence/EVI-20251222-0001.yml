@@ -1,13 +1,13 @@
-# Evidence Metadata
+# Evidence 元数据
 id: EVI-20251222-0001
 captured_at: 2025-12-22
 source_type: note
 source: "./EVI-20251222-0001.note.md"
-title: "Observation: Evidence-First Documentation"
+title: "观察：Evidence-first 文档方法"
 author: "vault-bootstrap"
 license: public
 sha256: ""
 sensitivity: public
 notes: |
-  Original observation captured during vault setup.
-  Demonstrates the evidence-first workflow pattern.
+  Vault 搭建过程中采集的原始观察。
+  演示 Evidence-first 工作流模式。

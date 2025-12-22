@@ -1,6 +1,6 @@
 ---
 id: KNOW-20251222-sample
-title: "Evidence-Based Knowledge Management"
+title: "基于证据的知识管理"
 created_at: 2025-12-22
 last_updated_at: 2025-12-22
 sensitivity: public
@@ -13,45 +13,45 @@ tags:
   - vault
 ---
 
-# Evidence-Based Knowledge Management
+# 基于证据的知识管理
 
-> Building reliable knowledge systems requires grounding claims in evidence and maintaining immutable audit trails.
+> 构建可靠的知识系统需要将主张锚定于证据，并维护不可变的审计追踪。
 
-## Context
+## 背景
 
-This synthesis demonstrates the vault workflow: Evidence → Cards → Know. It combines insights from two cards derived from the same evidence observation.
+本综合文档演示 Vault 工作流：Evidence → Cards → Know。它综合了从同一证据观察中衍生出的两张卡片的洞见。
 
-## Key Insights
+## 核心洞见
 
-### Preventing Claim Drift (CARD-20251222-0001)
+### 防止主张漂移 (CARD-20251222-0001)
 
-Documentation often starts with what we want to say, then finds supporting evidence afterward. This leads to "claim drift" where statements gradually detach from reality.
+文档往往从我们想说的内容开始，然后再寻找支持证据。这会导致"claim drift（主张漂移）"，陈述逐渐脱离现实。
 
-The evidence-first approach inverts this: capture observations first, then derive claims. This keeps documentation grounded.
+Evidence-first 方法颠倒了这一流程：先采集观察，再推导主张。这使文档保持锚定。
 
-### Enabling Verification (CARD-20251222-0002)
+### 支持验证 (CARD-20251222-0002)
 
-When evidence is immutable (append-only), every claim can be traced back to its source. This creates an audit trail that enables:
-- Verification by others
-- Historical review
-- Trust in the knowledge base
+当证据是不可变的（追加式）时，每个主张都可以追溯到其来源。这创建了一条审计追踪，支持：
+- 他人验证
+- 历史回顾
+- 对知识库的信任
 
-## Connections
+## 关联
 
-Both cards share a common theme: **reliability through constraints**. By constraining how we capture (evidence-first) and store (immutable) knowledge, we gain reliability and trust.
+两张卡片共享一个共同主题：**通过约束获得可靠性**。通过约束我们如何采集（Evidence-first）和存储（不可变）知识，我们获得可靠性和信任。
 
-## Application
+## 应用
 
-When adding to this vault:
-1. Capture evidence before writing claims
-2. Never modify existing evidence — only add new evidence or annotations
-3. Reference evidence IDs in every card
-4. Use Know docs only for synthesis, not new claims
+在向此 Vault 添加内容时：
+1. 在撰写主张前先采集证据
+2. 永不修改已有证据——只添加新证据或注释
+3. 在每张卡片中引用 Evidence ID
+4. Know Doc 仅用于综合，不引入新主张
 
 ---
 
-**Referenced Cards:**
-- CARD-20251222-0001 (claim drift prevention)
-- CARD-20251222-0002 (immutable audit trails)
+**引用的卡片：**
+- CARD-20251222-0001（防止主张漂移）
+- CARD-20251222-0002（不可变审计追踪）
 
-> Note: This document synthesizes existing cards. No new claims are made here.
+> **重要：** 本文档仅综合已有卡片，不引入新主张。
