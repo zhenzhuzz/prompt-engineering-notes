@@ -338,30 +338,79 @@ def build_ledger_report(
         lines.append("*(none)*")
     lines.append("")
 
-    # Warnings
+    # Warnings - Actionable format
     lines.append("## 5. Warnings Summary")
     lines.append("")
 
     all_warnings = evidence_warnings + card_warnings + know_warnings
-    sha256_missing = sum(1 for w in evidence_warnings if 'missing sha256' in w)
-    license_unknown = sum(1 for w in evidence_warnings if 'license=unknown' in w)
+
+    # Categorize evidence warnings
+    sha256_missing_files = [w.split(':')[0] for w in evidence_warnings if 'missing sha256' in w]
+    license_unknown_files = [w.split(':')[0] for w in evidence_warnings if 'license=unknown' in w]
+    other_evidence_warnings = [w for w in evidence_warnings if 'missing sha256' not in w and 'license=unknown' not in w]
 
     lines.append("| Category | Count |")
     lines.append("|----------|-------|")
-    lines.append(f"| Evidence: missing sha256 | {sha256_missing} |")
-    lines.append(f"| Evidence: license=unknown | {license_unknown} |")
+    lines.append(f"| Evidence: missing sha256 | {len(sha256_missing_files)} |")
+    lines.append(f"| Evidence: license=unknown | {len(license_unknown_files)} |")
     lines.append(f"| Card warnings | {len(card_warnings)} |")
     lines.append(f"| Know warnings | {len(know_warnings)} |")
     lines.append(f"| **Total warnings** | {len(all_warnings)} |")
     lines.append("")
 
-    if all_warnings:
-        lines.append("### Warning Details")
+    # Actionable: Missing sha256
+    if sha256_missing_files:
+        lines.append("### 5.1 Evidence: Missing sha256")
         lines.append("")
-        for w in all_warnings[:20]:  # Limit to first 20
+        lines.append("**Files:**")
+        for f in sha256_missing_files:
+            lines.append(f"- `vault/evidence/{f}`")
+        lines.append("")
+        lines.append("**How to fix:**")
+        lines.append("```bash")
+        lines.append("python vault/tools/fix_evidence_sha256.py")
+        lines.append("```")
+        lines.append("")
+
+    # Actionable: License unknown
+    if license_unknown_files:
+        lines.append("### 5.2 Evidence: License = unknown")
+        lines.append("")
+        lines.append("**Files:**")
+        for f in license_unknown_files:
+            lines.append(f"- `vault/evidence/{f}`")
+        lines.append("")
+        lines.append("**How to fix:**")
+        lines.append("Edit each `.yml` file and update `license:` to one of: `public`, `restricted`, or a specific license name.")
+        lines.append("")
+
+    # Card warnings
+    if card_warnings:
+        lines.append("### 5.3 Card Warnings")
+        lines.append("")
+        lines.append("**Issues:**")
+        for w in card_warnings:
             lines.append(f"- {w}")
-        if len(all_warnings) > 20:
-            lines.append(f"- ... and {len(all_warnings) - 20} more")
+        lines.append("")
+        lines.append("**How to fix:**")
+        lines.append("Edit the card front matter to add missing fields (`created_at`, `last_verified_at`).")
+        lines.append("")
+
+    # Know warnings
+    if know_warnings:
+        lines.append("### 5.4 Know Doc Warnings")
+        lines.append("")
+        lines.append("**Issues:**")
+        for w in know_warnings:
+            lines.append(f"- {w}")
+        lines.append("")
+
+    # Other evidence warnings
+    if other_evidence_warnings:
+        lines.append("### 5.5 Other Evidence Warnings")
+        lines.append("")
+        for w in other_evidence_warnings:
+            lines.append(f"- {w}")
         lines.append("")
 
     # Footer

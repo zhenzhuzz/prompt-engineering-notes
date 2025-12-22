@@ -7,7 +7,7 @@ source: "web research for backend stack open questions (Kafka vs RabbitMQ, Kuber
 title: "Web 调研：Kafka vs RabbitMQ + Kubernetes 适用范围"
 author: "vault-user"
 license: public
-sha256: ""
+sha256: "04ff33a15175bb2d5b601097610a6598b0b46518d49c4d6349cc3a8458e0e82f"
 sensitivity: public
 notes: |
   ## 调研动机

@@ -7,7 +7,7 @@ source: "./EVI-20251222-0003.note.md"
 title: "多 Agent 协作冲突调试"
 author: "vault-user"
 license: public
-sha256: ""
+sha256: "393e3425f73dded3d3d0bce742b66a6d105f00b507e828e2322ac0d4f9b21d70"
 sensitivity: public
 notes: |
   ## 环境信息 (Environment)

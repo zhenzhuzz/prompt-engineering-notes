@@ -7,7 +7,7 @@ source: "./EVI-20251222-0001.note.md"
 title: "观察：Evidence-first 文档方法"
 author: "vault-bootstrap"
 license: public
-sha256: ""
+sha256: "49bf30fd662808effb65bf873c68e18210b275c880d0e5fa1949d96d73ba5f96"
 sensitivity: public
 notes: |
   Vault 搭建过程中采集的原始观察。

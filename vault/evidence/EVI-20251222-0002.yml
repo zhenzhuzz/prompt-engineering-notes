@@ -7,7 +7,7 @@ source: "./EVI-20251222-0002.note.md"
 title: "Git Bash 路径翻译陷阱调试"
 author: "vault-user"
 license: public
-sha256: ""
+sha256: "7bbffd220f91a35e346ca4fe99554336e7074ecfb2ba9be30037141e4f998868"
 sensitivity: public
 notes: |
   ## 环境信息 (Environment)

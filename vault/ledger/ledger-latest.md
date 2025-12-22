@@ -1,6 +1,6 @@
 # Vault Ledger
 
-*Generated: 2025-12-22 19:57:26*
+*Generated: 2025-12-22 20:56:31*
 
 ## 1. Inventory
 
@@ -75,20 +75,19 @@ Cards not verified in last 30 days:
 
 | Category | Count |
 |----------|-------|
-| Evidence: missing sha256 | 5 |
+| Evidence: missing sha256 | 0 |
 | Evidence: license=unknown | 1 |
 | Card warnings | 0 |
 | Know warnings | 0 |
-| **Total warnings** | 6 |
+| **Total warnings** | 1 |
 
-### Warning Details
+### 5.2 Evidence: License = unknown
 
-- EVI-20251222-0001.yml: missing sha256
-- EVI-20251222-0002.yml: missing sha256
-- EVI-20251222-0003.yml: missing sha256
-- EVI-20251222-0004.yml: missing sha256
-- EVI-20251222-0004.yml: license=unknown
-- EVI-20251222-0005.yml: missing sha256
+**Files:**
+- `vault/evidence/EVI-20251222-0004.yml`
+
+**How to fix:**
+Edit each `.yml` file and update `license:` to one of: `public`, `restricted`, or a specific license name.
 
 ---
 
