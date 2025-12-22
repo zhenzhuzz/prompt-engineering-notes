@@ -1,0 +1,27 @@
+# Evidence 元数据
+id: EVI-20251222-0006
+type: tech_blog
+captured_at: 2025-12-22
+source_type: web
+source: "web research for backend tech stack deep analysis (Redis mechanism, Nacos vs Zookeeper, Spring Boot 2025 roadmap)"
+title: "Web 调研：后端技术栈深度机理分析"
+author: "vault-user"
+license: public
+sha256: "786b5ca3f64b899a59ddd2fa6549560576409f6bfa5e0a1a2de3db128ce0015b"
+sensitivity: public
+notes: |
+  ## 调研动机
+  为深度 Know 报告提供扩展证据，补充 EVI-0005 的内容：
+  1. Redis 单线程机理（why fast?）
+  2. Nacos vs Zookeeper 详细对比
+  3. 2025 Spring Boot 学习路径
+
+  ## 来源清单
+  - AWS Community (Redis architecture)
+  - Medium (Nacos vs Zookeeper)
+  - Amigoscode / CodingShuttle (2025 roadmap)
+
+  ## 关键结论
+  - Redis: Reactor 模式 + I/O 多路复用 + 内存数据结构 = 高性能
+  - Nacos vs ZK: AP vs CP，服务发现选 Nacos，协调选 ZK
+  - 学习路径: Java → Spring Boot → JPA → Redis → MQ → 微服务 → K8s
