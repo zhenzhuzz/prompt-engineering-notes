@@ -1,0 +1,14 @@
+# Evidence Metadata Template
+# Copy this file and rename to: EVI-YYYYMMDD-XXXX.yml
+
+id: EVI-YYYYMMDD-XXXX
+captured_at: YYYY-MM-DD
+source_type: note  # web | video | pdf | note | code | other
+source: "./EVI-YYYYMMDD-XXXX.note.md"  # URL or local path
+title: "[Optional: Title of the source]"
+author: "[Optional: Author/creator]"
+license: unknown  # unknown | public | restricted
+sha256: ""  # Optional: hash of the evidence file
+sensitivity: public  # public | internal | private
+notes: |
+  [Optional: Additional context about this evidence]

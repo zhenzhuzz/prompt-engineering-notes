@@ -1,0 +1,13 @@
+# Evidence Metadata
+id: EVI-20251222-0001
+captured_at: 2025-12-22
+source_type: note
+source: "./EVI-20251222-0001.note.md"
+title: "Observation: Evidence-First Documentation"
+author: "vault-bootstrap"
+license: public
+sha256: ""
+sensitivity: public
+notes: |
+  Original observation captured during vault setup.
+  Demonstrates the evidence-first workflow pattern.
