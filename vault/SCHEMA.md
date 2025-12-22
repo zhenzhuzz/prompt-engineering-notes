@@ -59,6 +59,34 @@ Evidence 元数据文件描述采集的来源。
 
 ---
 
+## KNOW 元数据 (YAML Front Matter)
+
+Know Doc 是带有 YAML front matter 的 Markdown 文件，综合多张 Card 或独立产出深度分析。
+
+| 字段 | 类型 | 必需 | 说明 |
+|------|------|------|------|
+| `id` | string | 是 | 格式: `KNOW-YYYYMMDD-descriptor` |
+| `kind` | enum | 否 | `assembled` \| `deep`（默认 `assembled`） |
+| `type` | enum | 否 | `tech_blog` \| `interview` \| `company_research` \| `debug_playbook` \| `other` |
+| `title` | string | 是 | 文档标题 |
+| `created_at` | date | 是 | 格式: `YYYY-MM-DD` |
+| `last_updated_at` | date | 是 | 格式: `YYYY-MM-DD` |
+| `sensitivity` | enum | 是 | `public` \| `internal` \| `private` |
+| `card_refs` | list | 条件 | `kind: assembled` 时必需，引用 CARD ID 列表 |
+| `source_refs` | list | 条件 | `kind: deep` 时推荐，引用 EVI ID 列表 |
+| `tags` | list | 否 | 相关标签列表 |
+
+### kind 字段说明
+
+| kind | 用途 | 验证规则 |
+|------|------|---------|
+| `assembled` | 综合已验证的 CARD，不引入新主张 | 必须引用至少 1 个 CARD |
+| `deep` | 独立产出深度分析报告 | 无 CARD 引用要求，推荐引用 EVI |
+
+**工作流参考:** 参见 [PLAYBOOK-report.md](PLAYBOOK-report.md)
+
+---
+
 ## ID 格式
 
 ```

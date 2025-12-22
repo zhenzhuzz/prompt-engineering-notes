@@ -277,8 +277,13 @@ def validate_know(filepath: Path) -> Tuple[List[str], List[str]]:
     except Exception as e:
         return [f"Cannot read file: {e}"], []
 
-    # Heuristic: Know docs should reference at least one CARD
-    if 'CARD-' not in content:
+    # Parse front matter to check kind
+    metadata, has_frontmatter = extract_yaml_frontmatter(content)
+    kind = metadata.get('kind', 'assembled')  # default to assembled
+
+    # Heuristic: Only assembled Know docs should reference CARDs
+    # Deep Know docs are standalone reports that may reference Evidence instead
+    if kind != 'deep' and 'CARD-' not in content:
         warnings.append("no CARD references found (Know docs should assemble cards)")
 
     return errors, warnings
