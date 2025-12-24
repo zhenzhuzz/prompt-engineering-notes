@@ -7,7 +7,6 @@
 3. `git log -3 --oneline` 查看最近提交风格
 4. `git add` 相关文件
 5. 生成 commit message 并提交
-6. `git push` 到远程
 
 ## Commit Message 规范
 
@@ -197,7 +196,4 @@ Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
 
 ## 注意事项
 
-- 如果 push 失败 (HTTP 408)，先诊断是否有大文件，不要盲目重试
-- 检查 .gitignore 是否正确排除了视频等大文件
-- 参考 `_knowledge/KNOW_git-large-file-push-trap-与正确工作流.md`
 - **业务价值部分用老板能听懂的语言**，避免技术术语
