@@ -1,0 +1,22 @@
+# Evidence 元数据
+id: EVI-20251222-0004
+type: tech_blog
+captured_at: 2025-12-22
+source_type: note
+source: "term list from video tutorial / backend roadmap"
+title: "后端技术栈名词清单"
+author: "vault-user"
+license: unknown
+sha256: "4d73c1caf8ae58b7ec138be33197c3c5cf3e4198c0199c26d696d8fbe3cb60b0"
+sensitivity: public
+notes: |
+  ## 动机
+  看到一串后端技术名词，想快速建立分层概念模型。
+
+  ## 约束
+  - 已有: Docker/MySQL/Git 基础
+  - 目标: 最小分层模型，理解"为什么需要"
+
+  ## 开放问题
+  - Kafka vs RabbitMQ 边界
+  - Nacos vs Zookeeper 选择条件

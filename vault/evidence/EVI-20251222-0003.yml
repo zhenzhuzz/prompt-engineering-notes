@@ -1,0 +1,32 @@
+# Evidence 元数据
+id: EVI-20251222-0003
+type: debug_playbook
+captured_at: 2025-12-22
+source_type: note
+source: "./EVI-20251222-0003.note.md"
+title: "多 Agent 协作冲突调试"
+author: "vault-user"
+license: public
+sha256: "393e3425f73dded3d3d0bce742b66a6d105f00b507e828e2322ac0d4f9b21d70"
+sensitivity: public
+notes: |
+  ## 环境信息 (Environment)
+  - OS：Windows 11
+  - 工具：Claude Code 多实例
+  - 项目：vault/ 知识资产库
+
+  ## 症状 (Symptom)
+  多 Agent 并发修改同一文件导致内容丢失或覆盖
+
+  ## 复现步骤 (Reproduction Steps)
+  1. 两个 Claude Code 实例指向同一仓库
+  2. Agent A 局部编辑某文件
+  3. Agent B 同时全文件重写该文件
+  4. Agent A 的修改丢失
+
+  ## 预期 vs 实际 (Expected vs Actual)
+  - 预期结果：修改被合并或提示冲突
+  - 实际结果：后写入者覆盖，无警告
+
+  ## 日志/产物指针 (Logs/Artifacts)
+  - 治理文档：vault/GOVERNANCE.md

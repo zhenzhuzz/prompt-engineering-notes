@@ -1,0 +1,14 @@
+# Evidence 元数据模板
+# 复制此文件并重命名为: EVI-YYYYMMDD-XXXX.yml
+
+id: EVI-YYYYMMDD-XXXX
+captured_at: YYYY-MM-DD
+source_type: note  # web | video | pdf | note | code | other
+source: "./EVI-YYYYMMDD-XXXX.note.md"  # URL 或本地路径
+title: "[可选：来源标题]"
+author: "[可选：作者/创建者]"
+license: unknown  # unknown | public | restricted
+sha256: ""  # 可选：证据文件的哈希值
+sensitivity: public  # public | internal | private
+notes: |
+  [可选：关于此证据的附加上下文]

@@ -1,0 +1,9 @@
+# Ledger directory gitignore
+# Track ledger-latest.md (current snapshot)
+# Ignore historical ledger files if added later
+
+# Keep ledger-latest.md tracked (not ignored)
+!ledger-latest.md
+
+# Ignore dated historical ledgers (e.g., ledger-2025-01-01.md)
+ledger-20*.md

@@ -1,0 +1,14 @@
+# Vault Configuration
+# 配置 vault 工具和工作流的默认行为
+
+# Background auto-load configuration
+# 生成 deep 报告时自动加载的用户背景文件
+background_file: "vault/context/BACKGROUND.md"
+background_mode: "always"  # always | on_request | never
+
+# Explanation preferences (from background)
+# 解释偏好配置
+explanation:
+  primary: "mechanism"      # 机理优先
+  secondary: "analogy"      # 类比其次
+  analogy_requires: "boundary"  # 类比必须标注失效边界

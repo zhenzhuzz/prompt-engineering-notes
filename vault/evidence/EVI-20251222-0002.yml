@@ -1,0 +1,33 @@
+# Evidence 元数据
+id: EVI-20251222-0002
+type: debug_playbook
+captured_at: 2025-12-22
+source_type: note
+source: "./EVI-20251222-0002.note.md"
+title: "Git Bash 路径翻译陷阱调试"
+author: "vault-user"
+license: public
+sha256: "7bbffd220f91a35e346ca4fe99554336e7074ecfb2ba9be30037141e4f998868"
+sensitivity: public
+notes: |
+  ## 环境信息 (Environment)
+  - OS：Windows 11 + Git Bash (MSYS2)
+  - Shell/Terminal：Git Bash
+  - 编码：UTF-8
+  - 仓库/项目：auto-research 自动化脚本
+  - 工具版本：Python 3.x (Windows native), Claude CLI
+
+  ## 症状 (Symptom)
+  Bash 脚本传递 MSYS2 虚拟路径给 python.exe，导致 FileNotFoundError
+
+  ## 复现步骤 (Reproduction Steps)
+  1. mktemp 创建临时文件 → /tmp/tmp.xxx
+  2. MSYS2 程序写入（成功）
+  3. python.exe 读取（失败）
+
+  ## 预期 vs 实际 (Expected vs Actual)
+  - 预期结果：Python 能读取临时文件
+  - 实际结果：FileNotFoundError: /tmp/tmp.xxx
+
+  ## 日志/产物指针 (Logs/Artifacts)
+  - 知识文档：_knowledge/KNOW_git-bash-windows-path-translation-trap.md

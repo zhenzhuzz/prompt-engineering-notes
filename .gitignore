@@ -1,0 +1,11 @@
+# Sensitive source files - DO NOT COMMIT
+# 敏感来源文件 - 包含未脱敏的个人信息
+ZhenZhu-Background.md
+
+# Temporary files
+_temp_*.md
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,27 @@
+# Evidence 元数据
+id: EVI-20251222-0005
+type: tech_blog
+captured_at: 2025-12-22
+source_type: web
+source: "web research for backend stack open questions (Kafka vs RabbitMQ, Kubernetes scope)"
+title: "Web 调研：Kafka vs RabbitMQ + Kubernetes 适用范围"
+author: "vault-user"
+license: public
+sha256: "04ff33a15175bb2d5b601097610a6598b0b46518d49c4d6349cc3a8458e0e82f"
+sensitivity: public
+notes: |
+  ## 调研动机
+  回答 CARD-20251222-0007 中的 Open questions：
+  1. Kafka vs RabbitMQ 的选择边界
+  2. Kubernetes 何时 overkill
+
+  ## 来源清单
+  - AWS Docs (Kafka vs RabbitMQ comparison)
+  - CloudAMQP Blog (when to use which)
+  - CNCF Blog (K8s operators overkill, 2024-12)
+  - Dev.to (K8s complexity critique)
+
+  ## 关键结论
+  - Kafka: 高吞吐、事件流、重放 → 选 Kafka
+  - RabbitMQ: 灵活路由、优先级、低运维 → 选 RabbitMQ
+  - K8s: 多服务+精细伸缩+运维能力 → 用 K8s；否则 Docker Compose/K3s

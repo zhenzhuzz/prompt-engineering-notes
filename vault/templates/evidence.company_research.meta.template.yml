@@ -1,0 +1,20 @@
+# Evidence 元数据模板 - company_research 类型
+# 复制此文件并重命名为: EVI-YYYYMMDD-XXXX.yml
+
+id: EVI-YYYYMMDD-XXXX
+type: company_research
+captured_at: YYYY-MM-DD
+source_type: web  # web | video | pdf | note | code | other
+source: "https://..."  # 公司官网/新闻/财报等 URL
+title: "[来源标题]"
+author: "[公司名/报告作者]"
+license: unknown  # unknown | public | restricted
+sha256: ""  # 可选：本地存档文件的哈希值
+sensitivity: internal  # public | internal | private
+notes: |
+  [调研背景与上下文]
+  - 公司名称：
+  - 调研目的：
+  - 来源类型：(官网 / 财报 / 新闻 / 招聘 / GitHub / 其他)
+  - 数据时效：
+  - 关键发现摘要：
