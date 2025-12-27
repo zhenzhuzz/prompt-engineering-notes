@@ -1,10 +1,10 @@
 # MCQ 一致性测试 WebApp - UI 生成规范
 
-**版本**: v1.3.2
-**日期**: 2025-12-24
+**版本**: v1.3.0
+**日期**: 2025-12-25
 **目标 AI**: Gemini 3 Pro Preview
 **生成目标**: 单页 WebApp (HTML + CSS + JS)
-**样式风格**: iOS Human Interface Guidelines + 青墨绿色系
+**样式风格**: iOS Human Interface Guidelines
 **目标设备**: iPhone (iOS 原生尺寸适配)
 
 ---
@@ -13,9 +13,7 @@
 
 | 版本 | 日期 | 变更说明 |
 |------|------|----------|
-| v1.3.2 | 2025-12-24 | **配色升级**: 主色调从雾霾蓝改为青墨绿 (#3A5F5A)，与 APP 主视觉统一；Mesh Gradient 光斑调整为墨绿色调 |
-| v1.3.1 | 2025-12-24 | **功能优化**: Boost 倒计时固定 30 秒、用户视频默认 0.75 倍速、Mini Report 视频自动循环；**标签更新**: Boost 标签改用 scene + equipment；**设计规范**: 新增图标设计美学章节 |
-| v1.3.0 | 2025-12-24 | **视觉升级**: 莫兰迪配色 + Mesh Gradient 弥散渐变 + 毛玻璃卡片；**Bug 修复**: 强制浅色模式、顶部间距；**交互优化**: 视频上传自动跳转、Apple 风格动效 |
+| v1.3.0 | 2025-12-25 | 新增音效动效系统 (4种音效 + 6种动效) |
 | v1.2.2 | 2025-12-24 | 新增 Boost Video Bottom Sheet (半屏弹窗+倒计时+播放控制)；补充完整数据映射总表 |
 | v1.2.1 | 2025-12-24 | 新增报告等待页(PG-2.5)；重写 Mini Report 页(PG-3)：Check Tips 可折叠卡片 + Summary + Boost 推荐 |
 | v1.2.0 | 2025-12-24 | 新增视频上传页、视频裁剪页(帧条组件)、AI等待页；iOS 尺寸适配 |
@@ -39,14 +37,14 @@ MCQ-WebApp (iOS 适配)
 │   ├── Card-Intro: 测试说明
 │   ├── Input-Name: 名字输入框
 │   └── Btn-Start: 开始按钮
-├── PG-1a: 视频上传页 (Upload) [UPDATED v1.3]
+├── PG-1a: 视频上传页 (Upload) [NEW]
 │   ├── Header: 关闭按钮 + 步骤指示器 (1/4)
 │   ├── Upload-Zone: 虚线上传区域
 │   │   ├── Video-Icon: 视频占位符图标
 │   │   └── Btn-Add: + 添加按钮
 │   ├── Tip-Text: 提示文字
-│   └── (无下一步按钮, 上传后自动跳转)
-├── PG-1b: 视频裁剪页 (Trim)
+│   └── Btn-Next: 下一步按钮 (浮动, 禁用)
+├── PG-1b: 视频裁剪页 (Trim) [NEW]
 │   ├── Header: 关闭按钮 + 步骤指示器 (2/4)
 │   ├── Video-Preview: 视频预览区
 │   │   └── Btn-Refresh: 刷新/重选按钮
@@ -56,12 +54,12 @@ MCQ-WebApp (iOS 适配)
 │   │   └── Selection-Box: 5秒选择框 (可拖动)
 │   ├── Tip-Text: "Select 5 seconds to analyze"
 │   └── Btn-Next: 下一步按钮 (浮动, 可用)
-├── PG-1c: AI等待页 (Loading)
+├── PG-1c: AI等待页 (Loading) [NEW]
 │   ├── Animation: 沙漏动画/图片
 │   └── Loading-Text: "Breaking down your motion..."
 ├── PG-2: MCQ 诊断页 (Diagnose)
 │   ├── Header: 关闭按钮 + 标题 "Action Diagnosis"
-│   ├── Video-User: 用户视频 (16:9, 220px, 0.75x 慢放) [UPDATED v1.3.1]
+│   ├── Video-User: 用户视频 (16:9, 220px)
 │   ├── Video-Reference: 参考视频 (9:16, 280px)
 │   │   ├── Toggle-Correct: ✓ 切换正确示范
 │   │   └── Toggle-Error: ✕ 切换错误示范 (默认)
@@ -69,30 +67,30 @@ MCQ-WebApp (iOS 适配)
 │       ├── Question-Tag: 维度-原子标签
 │       ├── Question-Text: "我有没有{description}?"
 │       └── Answer-Buttons: "✓ 有" / "✕ 没有"
-├── PG-2.5: 报告等待页 (Report Loading)
+├── PG-2.5: 报告等待页 (Report Loading) [NEW]
 │   ├── Animation: 沙漏动画
 │   └── Loading-Text: "Generating your report..."
-└── PG-3: Mini Report 页 (Report)
+└── PG-3: Mini Report 页 (Report) [UPDATED]
     ├── Header: 标题 "Mini Report"
-    ├── Video-Preview: 用户视频 (自动循环, 0.75x 慢放) [UPDATED v1.3.1]
+    ├── Video-Preview: 用户视频预览 (小尺寸)
     ├── Card-CheckTips: 检查提示 (可折叠)
     │   ├── Summary-Row: ✓ {count} / ✕ {count}
     │   └── Answer-List: 展开显示5题答案
     ├── Card-Summary: 总结洞察
     │   └── Insight-Text: summary.insight
-    ├── Card-Boost: 推荐练习 [UPDATED v1.3.1]
+    ├── Card-Boost: 推荐练习
     │   ├── Video-Thumbnail: 练习视频缩略图
     │   ├── Boost-Title: boost_name_cn
     │   ├── Boost-Description: description
-    │   ├── Tags: 🏠 scene + 🎯 equipment (带图标)
-    │   └── Btn-Arrow: 展开箭头按钮 (→)
+    │   ├── Tags: difficulty + body_part
+    │   └── Btn-Arrow: 展开箭头按钮 (→) [NEW]
     ├── Btn-Done: 完成按钮
-    └── Sheet-BoostVideo: Boost 视频播放 Bottom Sheet [UPDATED v1.3.1]
+    └── Sheet-BoostVideo: Boost 视频播放 Bottom Sheet [NEW]
         ├── Sheet-Header: ✕ 关闭按钮 + 标题 (boost_name_cn)
         ├── Video-Player: 全宽视频播放器
         └── Controls: 控制区
             ├── Btn-Reset: 重置按钮 (⟲)
-            ├── Countdown: 固定 30 秒倒计时 (00:30)
+            ├── Countdown: 倒计时显示 (00:28)
             └── Btn-Pause: 暂停/播放按钮 (⏸/▶)
 ```
 
@@ -110,9 +108,9 @@ MCQ-WebApp (iOS 适配)
 │  [点击开始] ────────────────────► 进入 PG-1a                            │
 │                                    │                                    │
 │  ┌─────────────────────────────────┴─────────────────────────────────┐  │
-│  │  PG-1a: 视频上传 [UPDATED v1.3]                                   │  │
-│  │  [选择视频文件] ──────────────► 加载视频, 自动跳转 PG-1b           │  │
-│  │  (移除手动点击下一步)                                              │  │
+│  │  PG-1a: 视频上传                                                   │  │
+│  │  [选择视频文件] ──────────────► 加载视频, 启用下一步按钮             │  │
+│  │  [点击下一步] ────────────────► 进入 PG-1b                          │  │
 │  └───────────────────────────────────────────────────────────────────┘  │
 │                                    │                                    │
 │  ┌─────────────────────────────────┴─────────────────────────────────┐  │
@@ -182,497 +180,18 @@ MCQ-WebApp (iOS 适配)
 - 任何外部 CDN 依赖
 - localStorage (本次不需要持久化)
 
----
-
-### 主题模式 [NEW v1.3]
-
-**强制浅色模式**，解决深色模式下文字不可见问题。
-
-```html
-<!-- HTML head 中添加 -->
-<meta name="color-scheme" content="light">
-```
-
-```css
-/* CSS 中强制浅色模式 */
-:root {
-    color-scheme: light only;
-}
-
-/* 确保所有元素遵循浅色模式 */
-* {
-    color-scheme: light only;
-}
-```
-
-**原因说明**:
-- 深色模式下输入框文字为白色，背景也为白色，导致不可见
-- 深色模式下问题描述文字不可见
-- 强制浅色模式确保所有用户看到一致的视觉效果
-
----
-
-### 青墨绿配色系统 [UPDATED v1.3.2]
-
-替换 iOS 原生色，使用低饱和度、柔和高级的青墨绿色系，与 APP 主视觉统一。
-
-```css
-:root {
-    /* ===== 青墨绿配色系统 ===== */
-
-    /* 主色 - 青墨绿 (Teal Green) */
-    --color-primary: #3A5F5A;
-    --color-primary-light: #4D7570;
-    --color-primary-dark: #2D4A46;
-
-    /* 成功色 - 薄荷灰绿 */
-    --color-success: #5A8F7A;
-    --color-success-light: #7AAF9A;
-    --color-success-dark: #4A7A68;
-
-    /* 警告色 - 琥珀金 (低饱和度橙) */
-    --color-warning: #C4A86C;
-    --color-warning-light: #D9C4A0;
-    --color-warning-dark: #B89660;
-
-    /* 危险色 - 豆沙红 (低饱和度红) */
-    --color-danger: #B87070;
-    --color-danger-light: #D49090;
-    --color-danger-dark: #A85858;
-
-    /* 背景色 - 暖灰系 */
-    --color-bg-base: #EBE7E3;        /* 页面背景基色 */
-    --color-bg-gradient-end: #DDD9D5; /* 渐变结束色 */
-
-    /* 卡片/表面色 */
-    --color-surface: rgba(255, 255, 255, 0.6);  /* 毛玻璃卡片 */
-    --color-surface-solid: #FFFFFF;              /* 纯白卡片 */
-
-    /* 文字色 */
-    --color-text-primary: #2C2C2E;    /* 主文字 - 深灰 */
-    --color-text-secondary: #6E6E73;  /* 次要文字 */
-    --color-text-tertiary: #8E8E93;   /* 辅助文字 */
-
-    /* 边框/分隔线 */
-    --color-border: rgba(0, 0, 0, 0.08);
-    --color-divider: rgba(0, 0, 0, 0.05);
-}
-```
-
-**配色对比表** [UPDATED v1.3.2]:
-
-| 用途 | iOS 原生色 | 青墨绿色 | 变化 |
-|------|-----------|---------|------|
-| 主色 | `#007AFF` | `#3A5F5A` | 青墨绿，与 APP 主色统一 |
-| 成功 | `#34C759` | `#5A8F7A` | 薄荷灰绿，和谐过渡 |
-| 危险 | `#FF3B30` | `#B87070` | 豆沙红，低饱和度 |
-| 背景 | `#F2F2F7` | `#EBE7E3` | 暖调 + 米色 (保持不变) |
-
----
-
-### Mesh Gradient 弥散渐变背景 [UPDATED v1.3.2]
-
-页面背景使用多层 `radial-gradient` 叠加，模拟弥散光斑效果。采用青墨绿色调。
-
-```css
-/* Mesh Gradient 弥散渐变 - 青墨绿色调 */
-body {
-    min-height: 100vh;
-    min-height: 100dvh;
-    background:
-        /* 光斑 1: 左上角 - 青墨绿 */
-        radial-gradient(
-            ellipse 80% 60% at 15% 20%,
-            rgba(58, 95, 90, 0.25) 0%,
-            transparent 55%
-        ),
-        /* 光斑 2: 右下角 - 薄荷灰绿 */
-        radial-gradient(
-            ellipse 70% 80% at 85% 75%,
-            rgba(90, 143, 122, 0.2) 0%,
-            transparent 50%
-        ),
-        /* 光斑 3: 中央偏右 - 浅墨绿 */
-        radial-gradient(
-            ellipse 50% 50% at 60% 45%,
-            rgba(77, 117, 112, 0.15) 0%,
-            transparent 45%
-        ),
-        /* 基底: 暖灰渐变 */
-        linear-gradient(
-            180deg,
-            var(--color-bg-base) 0%,
-            var(--color-bg-gradient-end) 100%
-        );
-
-    background-attachment: fixed; /* 滚动时背景固定 */
-}
-```
-
-**设计原理**:
-- 3 个 `radial-gradient` 椭圆光斑，位置错开
-- 透明度 30%-45%，避免过于花哨
-- `background-attachment: fixed` 确保滚动时背景稳定
-- 底层 `linear-gradient` 提供基础暖灰色调
-
----
-
-### 毛玻璃卡片效果 [NEW v1.3]
-
-所有卡片使用 `backdrop-filter` 实现毛玻璃效果。
-
-```css
-/* 毛玻璃卡片基础样式 */
-.card {
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);  /* Safari 兼容 */
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 16px;
-    box-shadow:
-        0 4px 24px rgba(0, 0, 0, 0.06),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);  /* 顶部高光 */
-}
-
-/* 毛玻璃按钮 */
-.btn-glass {
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-/* 毛玻璃输入框 */
-.input-glass {
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-}
-```
-
-**降级处理** (不支持 backdrop-filter 的浏览器):
-```css
-@supports not (backdrop-filter: blur(20px)) {
-    .card {
-        background: rgba(255, 255, 255, 0.95);
-    }
-}
-```
-
----
-
-### 交互动效规范 [NEW v1.3]
-
-#### 1. 按钮按压效果 (Apple 风格缩放)
-
-```css
-/* 按钮基础过渡 */
-.btn {
-    transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
-    will-change: transform;
-}
-
-/* 按压缩放 */
-.btn:active {
-    transform: scale(0.96);
-}
-
-/* 卡片按压效果 */
-.card-pressable:active {
-    transform: scale(0.98);
-}
-```
-
-#### 2. 弹性动画 (Bounce Effect)
-
-```css
-/* 弹性缓动函数 */
-:root {
-    --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
-    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* 元素进入动画 */
-@keyframes bounceIn {
-    0% {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    60% {
-        transform: scale(1.02);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-.animate-bounce-in {
-    animation: bounceIn 0.4s var(--ease-bounce);
-}
-```
-
-#### 3. 点击音效 (可选)
-
-```javascript
-// 创建音频上下文 (用户首次交互后初始化)
-let audioContext;
-
-function initAudio() {
-    if (!audioContext) {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    }
-}
-
-// 播放点击音效
-function playClickSound() {
-    if (!audioContext) return;
-
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-
-    oscillator.frequency.value = 1200;  // 频率
-    oscillator.type = 'sine';
-
-    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
-
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.1);
-}
-
-// 在按钮点击时调用
-document.querySelectorAll('.btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        playClickSound();
-    });
-});
-```
-
-#### 4. 触觉反馈 (Haptic Feedback)
-
-```javascript
-// 触发震动反馈 (仅支持的设备)
-function hapticFeedback(style = 'light') {
-    if (!navigator.vibrate) return;
-
-    switch (style) {
-        case 'light':
-            navigator.vibrate(10);
-            break;
-        case 'medium':
-            navigator.vibrate(20);
-            break;
-        case 'heavy':
-            navigator.vibrate([30, 10, 30]);
-            break;
-        case 'success':
-            navigator.vibrate([10, 50, 20]);
-            break;
-        case 'error':
-            navigator.vibrate([50, 30, 50, 30, 50]);
-            break;
-    }
-}
-
-// 在交互时调用
-function onAnswerSelect(hasError) {
-    hapticFeedback(hasError ? 'medium' : 'light');
-    // ... 其他逻辑
-}
-```
-
-**动效使用场景**:
-
-| 场景 | 动效类型 | 参数 |
-|------|----------|------|
-| 按钮点击 | 缩放 | `scale(0.96)`, 0.15s |
-| 卡片点击 | 缩放 | `scale(0.98)`, 0.15s |
-| 页面切换 | 淡入 | `opacity 0→1`, 0.3s |
-| Bottom Sheet | 滑入 | `translateY`, 0.3s |
-| 答案选择 | 震动 | light/medium |
-| 完成测试 | 震动 | success pattern |
-
----
-
-### 图标与视觉设计规范 [NEW v1.3.1]
-
-#### 1. 设计原则
-
-遵循 **扁平化设计 (Flat Design)** + **微拟物 (Soft Neomorphism)** 融合风格:
-
-| 原则 | 说明 |
-|------|------|
-| **简洁性** | 去除多余装饰，聚焦核心信息 |
-| **一致性** | 全局使用统一的图标风格和间距系统 |
-| **层次感** | 通过阴影、透明度区分前后层级 |
-| **可识别性** | 图标语义明确，无需文字说明 |
-
-#### 2. 图标系统
-
-**图标尺寸规范**:
-
-| 场景 | 尺寸 | 示例 |
-|------|------|------|
-| 导航图标 | 24x24 px | ✕ 关闭、← 返回 |
-| 操作图标 | 20x20 px | ▶ 播放、⏸ 暂停 |
-| 标签图标 | 14x14 px | 🏠 场景、🎯 器材 |
-| 装饰图标 | 40x40 px | 🎾 品牌图标 |
-
-**图标颜色**:
-```css
-/* 图标颜色系统 */
-.icon-primary { color: var(--color-primary); }      /* 主要操作 */
-.icon-success { color: var(--color-success); }      /* 成功/确认 */
-.icon-danger { color: var(--color-danger); }        /* 警告/删除 */
-.icon-muted { color: var(--color-text-tertiary); }  /* 辅助/禁用 */
-```
-
-#### 3. 标签图标映射
-
-**Boost 标签图标**:
-
-| 字段 | 值 | 图标 | 文案 |
-|------|-----|------|------|
-| scene | `home` | 🏠 | 居家 |
-| scene | `court` | 🎾 | 球场 |
-| scene | `gym` | 💪 | 健身房 |
-| equipment | `equip-free` | 🎯 | 徒手 |
-| equipment | `racket` | 🏸 | 需球拍 |
-| equipment | `ball` | 🎾 | 需网球 |
-
-**状态标签图标**:
-
-| 状态 | 图标 | 颜色 |
-|------|------|------|
-| 有问题 | ✓ | `--color-success` |
-| 没问题 | ✕ | `--color-danger` |
-| 正确示范 | ✓ | 白底 + 灰边 |
-| 错误示范 | ✕ | 红底 + 白字 |
-
-#### 4. 按钮设计规范
-
-**主要按钮 (Primary)**:
-```css
-.btn-primary {
-    background: var(--color-primary);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    padding: 14px 24px;
-    font-weight: 600;
-    box-shadow: 0 2px 8px rgba(107, 143, 168, 0.3);
-}
-```
-
-**次要按钮 (Secondary)**:
-```css
-.btn-secondary {
-    background: transparent;
-    color: var(--color-primary);
-    border: 2px solid var(--color-primary);
-    border-radius: 12px;
-    padding: 12px 22px;
-    font-weight: 500;
-}
-```
-
-**幽灵按钮 (Ghost)**:
-```css
-.btn-ghost {
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(8px);
-    color: var(--color-text-primary);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 12px;
-}
-```
-
-#### 5. 卡片设计规范
-
-**毛玻璃卡片层级**:
-
-| 层级 | 背景透明度 | 模糊度 | 用途 |
-|------|-----------|--------|------|
-| Level 1 | 60% | 20px | 主要内容卡片 |
-| Level 2 | 40% | 12px | 次要卡片/按钮 |
-| Level 3 | 30% | 8px | 输入框/小组件 |
-
-```css
-/* 卡片层级样式 */
-.card-level-1 {
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-}
-
-.card-level-2 {
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-```
-
-#### 6. 间距系统
-
-**8px 基准网格**:
-
-| 变量 | 值 | 用途 |
-|------|-----|------|
-| `--spacing-xs` | 4px | 图标内边距 |
-| `--spacing-sm` | 8px | 元素间隙 |
-| `--spacing-md` | 16px | 卡片内边距 |
-| `--spacing-lg` | 24px | 区块间距 |
-| `--spacing-xl` | 32px | 页面边距 |
-
-```css
-:root {
-    --spacing-xs: 4px;
-    --spacing-sm: 8px;
-    --spacing-md: 16px;
-    --spacing-lg: 24px;
-    --spacing-xl: 32px;
-}
-```
-
-#### 7. 排版系统
-
-**字体层级**:
-
-| 层级 | 字号 | 字重 | 行高 | 用途 |
-|------|------|------|------|------|
-| H1 | 28px | 700 | 1.3 | 页面标题 |
-| H2 | 22px | 600 | 1.4 | 区块标题 |
-| H3 | 18px | 600 | 1.4 | 卡片标题 |
-| Body | 16px | 400 | 1.6 | 正文内容 |
-| Caption | 14px | 400 | 1.5 | 辅助说明 |
-| Label | 12px | 500 | 1.4 | 标签/徽章 |
-
-```css
-.text-h1 { font-size: 28px; font-weight: 700; line-height: 1.3; }
-.text-h2 { font-size: 22px; font-weight: 600; line-height: 1.4; }
-.text-h3 { font-size: 18px; font-weight: 600; line-height: 1.4; }
-.text-body { font-size: 16px; font-weight: 400; line-height: 1.6; }
-.text-caption { font-size: 14px; font-weight: 400; line-height: 1.5; }
-.text-label { font-size: 12px; font-weight: 500; line-height: 1.4; }
-```
-
----
-
 ### iOS 样式规范
-
 - 字体: `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`
-- 圆角: `16px` (卡片), `12px` (按钮), `24px` (浮动按钮)
-- 阴影: `0 4px 24px rgba(0,0,0,0.06)`
+- 主色: `#007AFF` (iOS 蓝)
+- 成功色: `#34C759` (iOS 绿)
+- 警告色: `#FF9500` (iOS 橙)
+- 危险色: `#FF3B30` (iOS 红)
+- 背景色: `#F2F2F7` (iOS 浅灰)
+- 卡片背景: `#FFFFFF`
+- 圆角: `12px` (卡片), `8px` (按钮), `22px` (浮动按钮)
+- 阴影: `0 2px 8px rgba(0,0,0,0.1)`
 
----
-
-### iOS 尺寸适配规范
+### iOS 尺寸适配规范 [NEW]
 
 **参考机型**: iPhone 16 Pro
 
@@ -687,10 +206,9 @@ function onAnswerSelect(hasError) {
 
 ```css
 :root {
-    /* ===== Safe Area 适配 [UPDATED v1.3] ===== */
-    /* 基础间距 + Safe Area (解决非 iOS 环境下顶部贴边问题) */
-    --safe-area-top: calc(20px + env(safe-area-inset-top, 0px));
-    --safe-area-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    /* Safe Area 适配 (iPhone 16 Pro) */
+    --safe-area-top: env(safe-area-inset-top, 59px);
+    --safe-area-bottom: env(safe-area-inset-bottom, 34px);
 
     /* iPhone 16 Pro 基准尺寸 */
     --container-max-width: 402px;
@@ -713,7 +231,7 @@ function onAnswerSelect(hasError) {
 /* 浮动按钮 */
 .btn-floating {
     position: fixed;
-    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(20px + var(--safe-area-bottom));
     right: 20px;
     width: 56px;
     height: 56px;
@@ -724,14 +242,167 @@ function onAnswerSelect(hasError) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
 ```
 
-**顶部间距修复说明 [v1.3]**:
+---
 
-| 环境 | `env(safe-area-inset-top)` | 最终 `padding-top` |
-|------|---------------------------|-------------------|
-| iPhone (有刘海) | 59px | 20px + 59px = 79px |
-| iPhone (无刘海) | 0px | 20px + 0px = 20px |
-| Android | 0px | 20px + 0px = 20px |
-| 桌面浏览器 | 0px | 20px + 0px = 20px |
+## 音效动效系统 [v1.3 NEW]
+
+### 音效系统 (Web Audio API)
+
+使用 Web Audio API 生成合成音效，无需外部音频文件。
+
+#### 音效服务架构
+
+```typescript
+class AudioService {
+  private context: AudioContext | null = null;
+  private muted: boolean = false;
+
+  init() {
+    this.context = new (window.AudioContext || (window as any).webkitAudioContext)();
+  }
+
+  setMuted(m: boolean) {
+    this.muted = m;
+  }
+
+  private playTone(freq: number, type: OscillatorType, duration: number, volume: number) {
+    if (!this.context || this.muted) return;
+    if (this.context.state === 'suspended') this.context.resume();
+
+    const osc = this.context.createOscillator();
+    const gain = this.context.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, this.context.currentTime);
+    gain.gain.setValueAtTime(volume, this.context.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, this.context.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(this.context.destination);
+    osc.start();
+    osc.stop(this.context.currentTime + duration);
+  }
+
+  playClick() { this.playTone(600, 'sine', 0.05, 0.1); }
+  playStep() { this.playTone(800, 'sine', 0.2, 0.2); }
+  playSuccess() { this.playTone(1200, 'sine', 0.1, 0.2); }
+  playError() { this.playTone(300, 'square', 0.3, 0.1); }
+}
+
+export const audioService = new AudioService();
+```
+
+#### 四种音效类型
+
+| 音效方法 | 频率 | 波形 | 时长 | 音量 | 触发场景 |
+|----------|------|------|------|------|----------|
+| `playClick()` | 600 Hz | sine | 0.05s | 0.1 | 所有按钮点击 |
+| `playStep()` | 800 Hz | sine | 0.2s | 0.2 | 上传完成、裁剪确认、MCQ 答题 |
+| `playSuccess()` | 1200 Hz | sine | 0.1s | 0.2 | Mini Report 展示、Done 完成 |
+| `playError()` | 300 Hz | square | 0.3s | 0.1 | 验证失败时 |
+
+---
+
+### 动效系统 (CSS Animations)
+
+#### 六种动效类型
+
+| 动效 | CSS 实现 | 触发场景 |
+|------|----------|----------|
+| 按钮按压 | `transform: scale(0.96)` + `transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1)` | 所有按钮 :active |
+| 页面淡入 | `animation: fadeIn 0.3s ease-out` | 页面切换 |
+| 卡片选中 | `transform: scale(1.02)` + 背景变色 + 阴影增强 | MCQ 选项点击 |
+| Hover 上浮 | `transform: translateY(-2px)` + 阴影增强 | 可点击元素 hover |
+| 成功闪烁 | 背景短暂变绿 (0.5s) | Done 按钮点击后 |
+| 加载脉冲 | `animation: pulse 2s ease-in-out infinite` | Loading 页面元素 |
+
+#### CSS 动画定义
+
+```css
+/* 按钮按压效果 */
+.btn-bounce {
+  transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.btn-bounce:active {
+  transform: scale(0.96);
+}
+
+/* 页面淡入 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* 卡片选中效果 */
+.card-selected {
+  transform: scale(1.02);
+  background: rgba(58, 95, 90, 0.1);
+  box-shadow: 0 6px 24px rgba(58, 95, 90, 0.15);
+}
+
+/* Hover 上浮 */
+.hover-lift {
+  transition: all 0.2s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* 成功闪烁 */
+.success-flash {
+  background: #34C759 !important;
+  transition: background 0.3s ease;
+}
+
+/* 加载脉冲 */
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+}
+.animate-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+```
+
+---
+
+### 触发点清单
+
+| 页面 | 交互元素 | 音效 | 动效 |
+|------|----------|------|------|
+| **PG-1 Prepare** | Start 按钮 | `playClick()` | 按压缩放 |
+| **PG-1a Upload** | 上传区域点击 | `playClick()` | 按压缩放 |
+| **PG-1a Upload** | 视频上传成功 | `playStep()` | - |
+| **PG-1a Upload** | 视频验证失败 | `playError()` | - |
+| **PG-1b Trim** | Play/Pause 按钮 | `playClick()` | 按压缩放 |
+| **PG-1b Trim** | Refresh 按钮 | `playClick()` | 按压缩放 |
+| **PG-1b Trim** | Next 按钮 | `playStep()` | 按压缩放 |
+| **PG-1c Loading** | 沙漏图标 | - | 加载脉冲 |
+| **PG-1c Loading** | 文字 | - | 加载脉冲 |
+| **PG-2 MCQ** | "有" 按钮 | `playClick()` | 按压缩放 + 卡片选中 |
+| **PG-2 MCQ** | "没有" 按钮 | `playClick()` | 按压缩放 + 卡片选中 |
+| **PG-2 MCQ** | 第 5 题完成 | `playStep()` | - |
+| **PG-2 MCQ** | ✓/✕ 切换按钮 | `playClick()` | 按压缩放 |
+| **PG-2.5 Loading** | 沙漏图标 | - | 加载脉冲 |
+| **PG-3 Report** | 页面加载 | `playSuccess()` | 页面淡入 |
+| **PG-3 Report** | Check Tips 展开/收起 | `playClick()` | - |
+| **PG-3 Report** | Boost 卡片点击 | `playClick()` | 按压缩放 + Hover 上浮 |
+| **PG-3 Report** | Done 按钮 | `playSuccess()` | 按压缩放 + 成功闪烁 |
+| **Sheet-BoostVideo** | 播放/暂停按钮 | `playClick()` | 按压缩放 |
+| **Sheet-BoostVideo** | 重置按钮 | `playClick()` | 按压缩放 |
+| **Sheet-BoostVideo** | 关闭按钮 | `playClick()` | 按压缩放 |
+
+---
+
+### 实现要点
+
+1. **音效初始化**: 在应用启动时调用 `audioService.init()`
+2. **用户交互触发**: 首次音效需由用户交互触发 (AudioContext 限制)
+3. **静音开关**: 可选，通过 `audioService.setMuted(true)` 控制
+4. **动效分离**: CSS 动画与 JS 音效分离，互不影响
+5. **性能优化**: 使用 Web Audio API 合成音效，无需加载音频文件
 
 ---
 
@@ -750,7 +421,7 @@ function onAnswerSelect(hasError) {
 │  │  网球正手动作诊断系统               │  │
 │  └───────────────────────────────────┘  │
 ├─────────────────────────────────────────┤
-│  Card-Intro (毛玻璃卡片)                 │
+│  Card-Intro                             │
 │  ┌───────────────────────────────────┐  │
 │  │  📋 测试说明                       │  │
 │  │  1. 上传你的正手击球视频            │  │
@@ -759,7 +430,7 @@ function onAnswerSelect(hasError) {
 │  │  4. 完成后导出你的评分结果          │  │
 │  └───────────────────────────────────┘  │
 │                                         │
-│  Input-Name (毛玻璃输入框)               │
+│  Input-Name                             │
 │  ┌───────────────────────────────────┐  │
 │  │  👤 请输入你的名字                  │  │
 │  │  ┌─────────────────────────────┐  │  │
@@ -777,18 +448,14 @@ function onAnswerSelect(hasError) {
 
 **交互行为**:
 1. 输入名字 → 实时验证非空
-2. 名字非空后 → "开始测试" 按钮变为可用 (从灰色变为主色)
-3. 点击"开始测试" → 触发按压缩放 + 震动反馈 → 跳转到 PG-1a
+2. 名字非空后 → "开始测试" 按钮变为可用 (从灰色变蓝色)
+3. 点击"开始测试" → 跳转到 PG-1a (视频上传页)
 
 ---
 
-### Page 1a: 视频上传页 (PG-1a) [UPDATED v1.3]
+### Page 1a: 视频上传页 (PG-1a) [NEW]
 
 **功能**: 上传用户的网球正手视频
-
-**v1.3 变更**:
-- ❌ 移除: 右下角浮动的「下一步」按钮
-- ✅ 新增: 视频上传成功后自动跳转到 PG-1b
 
 **布局**:
 ```
@@ -805,7 +472,7 @@ function onAnswerSelect(hasError) {
 │  │  Upload your video                 │  │
 │  └───────────────────────────────────┘  │
 │                                         │
-│  Upload-Zone (毛玻璃虚线边框)            │
+│  Upload-Zone (虚线边框)                  │
 │  ┌ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐  │
 │  │                                   │  │
 │  │      ┌─────────────────┐          │  │
@@ -817,46 +484,41 @@ function onAnswerSelect(hasError) {
 │  │                                   │  │
 │  └ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┘  │
 │                                         │
-│  Tip-Card (毛玻璃卡片)                   │
+│  Tip-Card                               │
 │  ┌───────────────────────────────────┐  │
 │  │  💡 Upload the technique clip     │  │
 │  │     you want to troubleshoot      │  │
 │  │     (about 5 seconds)             │  │
 │  └───────────────────────────────────┘  │
 │                                         │
-│  (无浮动按钮)                            │
-│                                         │
+│                              [→]        │
+│                         (浮动按钮,灰色)  │
 └─────────────────────────────────────────┘
 ```
 
-**交互行为 [UPDATED v1.3]**:
+**交互行为**:
 1. 点击上传区域或 "+" 按钮 → 打开文件选择器 (accept="video/*")
 2. 选择视频后 → 验证视频时长 >= 5 秒
-3. 视频有效 → **自动跳转到 PG-1b** (无需点击下一步)
-4. 视频无效 → 显示错误提示 (如 "视频太短，请选择至少 5 秒的视频")
-5. 点击 "✕" → 返回 PG-1
+3. 视频有效 → 下一步按钮变为绿色可用
+4. 点击 "✕" → 返回 PG-1
+5. 点击下一步 → 进入 PG-1b
 
 **技术实现**:
 ```javascript
 // 文件选择
 <input type="file" accept="video/*" id="video-input" hidden>
 
-// 视频时长验证 + 自动跳转 [UPDATED v1.3]
+// 视频时长验证
 video.onloadedmetadata = () => {
     if (video.duration >= 5) {
-        hapticFeedback('light');  // 触觉反馈
-        setTimeout(() => {
-            showPage('trim');  // 自动跳转到裁剪页
-        }, 300);  // 短暂延迟让用户看到上传成功
-    } else {
-        showError('视频太短，请选择至少 5 秒的视频');
+        enableNextButton();
     }
 };
 ```
 
 ---
 
-### Page 1b: 视频裁剪页 (PG-1b)
+### Page 1b: 视频裁剪页 (PG-1b) [NEW]
 
 **功能**: 选择视频中的 5 秒片段进行分析
 
@@ -875,7 +537,7 @@ video.onloadedmetadata = () => {
 │  │  Upload your video                 │  │
 │  └───────────────────────────────────┘  │
 │                                         │
-│  Video-Preview (毛玻璃边框)              │
+│  Video-Preview                          │
 │  ┌───────────────────────────────────┐  │
 │  │                           [🔄]    │  │
 │  │                      (刷新按钮)    │  │
@@ -908,7 +570,7 @@ video.onloadedmetadata = () => {
 **交互行为**:
 1. 加载视频后 → 自动提取 5 个帧缩略图显示在帧条中
 2. 黄色选择框默认选中前 5 秒
-3. 左右拖动选择框 → 更新选中范围 + 震动反馈
+3. 左右拖动选择框 → 更新选中范围
 4. 点击播放按钮 → 播放选中的 5 秒片段
 5. 点击刷新按钮 → 返回 PG-1a 重新选择视频
 6. 点击 "✕" → 返回 PG-1
@@ -967,8 +629,8 @@ class FrameBar {
 .selection-box {
     position: absolute;
     height: 100%;
-    background: rgba(201, 168, 124, 0.3);  /* 莫兰迪奶茶色 */
-    border: 3px solid var(--color-warning);
+    background: rgba(255, 200, 0, 0.3);
+    border: 3px solid #FFC800;
     border-radius: 8px;
     cursor: grab;
 }
@@ -980,7 +642,7 @@ class FrameBar {
 
 ---
 
-### Page 1c: AI等待页 (PG-1c)
+### Page 1c: AI等待页 (PG-1c) [NEW]
 
 **功能**: 显示 AI 分析等待动画
 
@@ -988,7 +650,7 @@ class FrameBar {
 ```
 ┌─────────────────────────────────────────┐
 │                                         │
-│        (Mesh Gradient 背景)              │
+│                                         │
 │                                         │
 │                                         │
 │           ┌─────────────┐               │
@@ -1047,7 +709,7 @@ function showLoadingPage() {
 
 ---
 
-### Page 2: MCQ 诊断页 (PG-2)
+### Page 2: MCQ 诊断页 (PG-2) [UPDATED]
 
 **功能**: 逐题回答 5 道 MCQ 诊断题
 
@@ -1084,7 +746,7 @@ function showLoadingPage() {
 │  └───────────────────────────────────┘  │
 │  height: 280px, border-radius: 12px     │
 │                                         │
-│  Card-Question (毛玻璃问题卡片)          │
+│  Card-Question (问题卡片)                │
 │  ┌───────────────────────────────────┐  │
 │  │ ┌─────────────────────────┐       │  │
 │  │ │ {dimension_cn}-{atom_cn}│       │  │
@@ -1096,7 +758,7 @@ function showLoadingPage() {
 │  │                                   │  │
 │  │  ┌─────────────┐ ┌─────────────┐  │  │
 │  │  │   ✓  有     │ │   ✕  没有   │  │  │
-│  │  │  (成功色)   │ │  (危险色)   │  │  │
+│  │  │  (绿边框)   │ │  (红边框)   │  │  │
 │  │  └─────────────┘ └─────────────┘  │  │
 │  └───────────────────────────────────┘  │
 │                                         │
@@ -1110,20 +772,11 @@ function showLoadingPage() {
 - 中间: 标题 "Action Diagnosis"
 - 无进度条（简洁设计）
 
-#### Video-User (用户视频) [UPDATED v1.3.1]
+#### Video-User (用户视频)
 - 高度: 220px
 - 比例: 16:9 宽屏
 - 圆角: 12px
 - 循环播放选中的 5 秒片段
-- **播放速度: 0.75x 慢放** (默认)
-
-```javascript
-// 用户视频默认 0.75 倍速
-const userVideo = document.getElementById('user-video');
-userVideo.playbackRate = 0.75;  // 慢放，便于观察动作细节
-userVideo.loop = true;
-userVideo.play();
-```
 
 #### Video-Reference (参考视频)
 - 高度: 280px
@@ -1131,23 +784,23 @@ userVideo.play();
 - 圆角: 12px
 - 右上角切换按钮:
   - ✓ 按钮: 显示正确示范 (白色背景, 灰色边框)
-  - ✕ 按钮: 显示错误示范 (危险色背景)
+  - ✕ 按钮: 显示错误示范 (红色背景, 红色✕)
   - **默认选中**: ✕ 错误示范
 - 底部播放控制:
   - 进度条 (白色轨道，灰色进度)
   - 时间显示 (00:00 / 00:00)
 
 #### Card-Question (问题卡片)
-- 背景: 毛玻璃效果
-- 圆角: 16px
-- 阴影: 0 4px 24px rgba(0,0,0,0.06)
+- 背景: 白色
+- 圆角: 12px
+- 阴影: 0 2px 8px rgba(0,0,0,0.1)
 - 内边距: 16px
 
 **问题标签样式**:
 ```css
 .question-tag {
     display: inline-block;
-    background: var(--color-success-dark);  /* 灰豆绿深色 */
+    background: #1B5E20;  /* 深绿色 */
     color: white;
     padding: 6px 12px;
     border-radius: 16px;
@@ -1161,7 +814,7 @@ userVideo.play();
 .question-text {
     font-size: 17px;
     font-weight: 400;
-    color: var(--color-text-primary);
+    color: #000;
     margin: 16px 0;
 }
 ```
@@ -1178,31 +831,26 @@ userVideo.play();
     align-items: center;
     justify-content: center;
     gap: 8px;
-    transition: transform 0.15s var(--ease-bounce);
-}
-
-.answer-btn:active {
-    transform: scale(0.96);
 }
 
 .answer-btn-yes {
     background: transparent;
-    border: 2px solid var(--color-success);
-    color: var(--color-success);
+    border: 2px solid #34C759;  /* iOS 绿 */
+    color: #34C759;
 }
 
 .answer-btn-no {
     background: transparent;
-    border: 2px solid var(--color-danger);
-    color: var(--color-danger);
+    border: 2px solid #FF3B30;  /* iOS 红 */
+    color: #FF3B30;
 }
 ```
 
 **交互行为**:
 1. 点击 ✓ 按钮 → 切换显示正确示范视频
 2. 点击 ✕ 按钮 → 切换显示错误示范视频 (默认)
-3. 点击 "✓ 有" → 按压缩放 + 震动反馈 + 记录 `has_error: true`，0.5秒后自动跳转下一题
-4. 点击 "✕ 没有" → 按压缩放 + 震动反馈 + 记录 `has_error: false`，0.5秒后自动跳转下一题
+3. 点击 "✓ 有" → 记录 `has_error: true`，0.5秒后自动跳转下一题
+4. 点击 "✕ 没有" → 记录 `has_error: false`，0.5秒后自动跳转下一题
 5. 点击 Header ✕ → 返回上一页或退出诊断
 6. 完成第 5 题后 → 自动跳转到 PG-2.5 (报告等待页)
 
@@ -1217,7 +865,7 @@ userVideo.play();
 
 ---
 
-### Page 2.5: 报告等待页 (PG-2.5)
+### Page 2.5: 报告等待页 (PG-2.5) [NEW]
 
 **功能**: 显示报告生成等待动画
 
@@ -1225,7 +873,7 @@ userVideo.play();
 ```
 ┌─────────────────────────────────────────┐
 │                                         │
-│        (Mesh Gradient 背景)              │
+│                                         │
 │                                         │
 │                                         │
 │           ┌─────────────┐               │
@@ -1268,19 +916,19 @@ function showReportLoadingPage() {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    /* 继承 Mesh Gradient 背景 */
+    background: #F2F2F7;
 }
 
 .loading-text {
     font-size: 18px;
-    color: var(--color-text-secondary);
+    color: #666;
     margin-top: 24px;
 }
 ```
 
 ---
 
-### Page 3: Mini Report 页 (PG-3)
+### Page 3: Mini Report 页 (PG-3) [UPDATED]
 
 **功能**: 显示诊断结果，包含 Check Tips、Summary 洞察、推荐 Boost 练习
 
@@ -1294,22 +942,22 @@ function showReportLoadingPage() {
 │  └───────────────────────────────────┘  │
 ├─────────────────────────────────────────┤
 │                                         │
-│  Video-Preview (用户视频) [UPDATED v1.3.1]│
+│  Video-Preview (用户视频预览)            │
 │  ┌───────────────────────────────────┐  │
 │  │                                   │  │
 │  │      [用户正手视频 - 小尺寸]       │  │
-│  │      (自动循环播放, 0.75x 慢放)    │  │
+│  │      (选中的5秒片段静态预览)       │  │
 │  │                                   │  │
 │  └───────────────────────────────────┘  │
 │  height: 160px, border-radius: 12px     │
 │                                         │
-│  Card-CheckTips (毛玻璃可折叠卡片)       │
+│  Card-CheckTips (可折叠卡片)             │
 │  ┌───────────────────────────────────┐  │
 │  │  Check tips                  [v]  │  │
 │  │  (标题)               (展开箭头)   │  │
 │  │                                   │  │
 │  │  ✓ {correct_count}  ✕ {error_count}│ │
-│  │  (成功色图标)       (危险色图标)   │  │
+│  │  (绿色图标+数字)   (红色图标+数字) │  │
 │  │                                   │  │
 │  │  [展开后显示5题答案列表]           │  │
 │  │  ┌─────────────────────────────┐  │  │
@@ -1321,7 +969,7 @@ function showReportLoadingPage() {
 │  │  └─────────────────────────────┘  │  │
 │  └───────────────────────────────────┘  │
 │                                         │
-│  Card-Summary (毛玻璃总结卡片)           │
+│  Card-Summary (总结卡片)                 │
 │  ┌───────────────────────────────────┐  │
 │  │  Summary                          │  │
 │  │  (标题)                           │  │
@@ -1331,18 +979,18 @@ function showReportLoadingPage() {
 │  │                                   │  │
 │  └───────────────────────────────────┘  │
 │                                         │
-│  Card-Boost (毛玻璃推荐练习卡片) [v1.3.1] │
+│  Card-Boost (推荐练习卡片)               │
 │  ┌───────────────────────────────────┐  │
 │  │  ┌───────────┐                    │  │
 │  │  │           │  {boost_name_cn}   │  │
 │  │  │  [视频    │  (练习名称, 粗体)   │  │
 │  │  │  缩略图]  │                    │  │
 │  │  │           │  {description}     │  │
-│  │  │   ▶       │  (练习描述)      [→]│  │
+│  │  │   ▶       │  (练习描述)         │  │
 │  │  └───────────┘                    │  │
 │  │                                   │  │
 │  │  ┌─────────┐  ┌─────────────┐    │  │
-│  │  │🏠 {scene}│  │🎯 {equipment}│    │  │
+│  │  │ {难度}   │  │ {body_part} │    │  │
 │  │  │(灰背景) │  │  (灰背景)    │    │  │
 │  │  └─────────┘  └─────────────┘    │  │
 │  └───────────────────────────────────┘  │
@@ -1350,7 +998,7 @@ function showReportLoadingPage() {
 │  Btn-Done (完成按钮)                     │
 │  ┌───────────────────────────────────┐  │
 │  │           [ Done ]                │  │
-│  │       (成功色圆角按钮, 全宽)       │  │
+│  │       (绿色圆角按钮, 全宽)         │  │
 │  └───────────────────────────────────┘  │
 │                                         │
 └─────────────────────────────────────────┘
@@ -1362,25 +1010,14 @@ function showReportLoadingPage() {
 - 居中标题: "Mini Report"
 - 无关闭按钮 (用户必须点击 Done 完成)
 
-#### Video-Preview (用户视频预览) [UPDATED v1.3.1]
+#### Video-Preview (用户视频预览)
 - 高度: 160px
 - 比例: 16:9
 - 圆角: 12px
-- **自动循环播放选中的 5 秒片段** (非静态图片)
-- **播放速度: 0.75x 慢放** (默认)
-- 静音播放 (muted)
-
-```javascript
-// Mini Report 用户视频配置
-const reportVideo = document.getElementById('report-user-video');
-reportVideo.playbackRate = 0.75;
-reportVideo.loop = true;
-reportVideo.muted = true;
-reportVideo.play();
-```
+- 显示选中的5秒片段第一帧 (静态图片)
 
 #### Card-CheckTips (检查提示卡片)
-- 毛玻璃背景，圆角 16px，阴影
+- 白色背景，圆角 12px，阴影
 - 默认**收起状态**，只显示标题行和统计数字
 - 点击展开/收起答案列表
 
@@ -1407,71 +1044,52 @@ reportVideo.play();
 ```
 
 **答案列表项样式**:
-- ✓ (成功色) + atom_name_cn → has_error: true (有这个问题)
-- ✕ (危险色) + atom_name_cn → has_error: false (没有这个问题)
+- ✓ (绿色 #34C759) + atom_name_cn → has_error: true (有这个问题)
+- ✕ (红色 #FF3B30) + atom_name_cn → has_error: false (没有这个问题)
 
 #### Card-Summary (总结卡片)
-- 毛玻璃背景，圆角 16px，阴影
+- 白色背景，圆角 12px，阴影
 - 标题: "Summary"
 - 内容: 从 `summary.insight` 读取
 - 字体大小: 15px，行高 1.6
 
-#### Card-Boost (推荐练习卡片) [UPDATED v1.3.1]
-- 毛玻璃背景，圆角 16px，阴影
+#### Card-Boost (推荐练习卡片)
+- 白色背景，圆角 12px，阴影
 - 左侧: 视频缩略图 (80x100px)，带播放按钮图标
 - 右侧上方: `boost_name_cn` (粗体)
-- 右侧下方: `description` (次要文字色)
-- 右侧: 箭头按钮 (→) 用于打开 Bottom Sheet
-- 底部: 两个标签 (带图标)
-  - 🏠 `scene` 标签 (练习场景: home/court/gym)
-  - 🎯 `equipment` 标签 (器材需求: equip-free/racket/ball)
-
-**标签数据映射**:
-
-| 字段 | 数据来源 | 可选值 | 显示文案 |
-|------|----------|--------|----------|
-| scene | `recommended_boost.scene` | `home` | 🏠 居家 |
-| scene | `recommended_boost.scene` | `court` | 🎾 球场 |
-| scene | `recommended_boost.scene` | `gym` | 💪 健身房 |
-| equipment | `recommended_boost.equipment` | `equip-free` | 🎯 徒手 |
-| equipment | `recommended_boost.equipment` | `racket` | 🏸 需球拍 |
-| equipment | `recommended_boost.equipment` | `ball` | 🎾 需网球 |
+- 右侧下方: `description` (灰色小字)
+- 底部: 两个标签
+  - `difficulty` 标签 (灰色背景)
+  - `body_part` 标签 (灰色背景)
 
 **标签样式**:
 ```css
 .boost-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    background: rgba(0, 0, 0, 0.05);
-    color: var(--color-text-secondary);
-    padding: 6px 12px;
+    display: inline-block;
+    background: #E5E5EA;
+    color: #666;
+    padding: 4px 12px;
     border-radius: 12px;
     font-size: 12px;
     margin-right: 8px;
-}
-
-.boost-tag .icon {
-    font-size: 14px;
 }
 ```
 
 #### Btn-Done (完成按钮)
 - 全宽按钮
-- 背景色: var(--color-success)
+- 背景色: #34C759 (iOS 绿)
 - 文字: "Done" (白色)
-- 圆角: 24px
+- 圆角: 22px
 - 高度: 50px
-- 按压效果: scale(0.96)
 
 **交互行为**:
-1. 点击 Check Tips 卡片 → 展开/收起答案列表 + 震动反馈
-2. 点击 Boost 卡片的箭头按钮 (→) → 打开 Boost Video Bottom Sheet
-3. 点击 "Done" → 按压缩放 + 成功震动 + 清空状态，回到 PG-1a
+1. 点击 Check Tips 卡片 → 展开/收起答案列表
+2. 点击 Boost 卡片的箭头按钮 (→) → 打开 Boost Video Bottom Sheet [UPDATED]
+3. 点击 "Done" → 清空状态，回到 PG-1a (重新上传新视频)
 
 ---
 
-### Sheet: Boost Video 播放弹窗 (Sheet-BoostVideo)
+### Sheet: Boost Video 播放弹窗 (Sheet-BoostVideo) [NEW]
 
 **功能**: 半屏弹窗显示 Boost 练习视频，带倒计时和播放控制
 
@@ -1518,8 +1136,8 @@ reportVideo.play();
 
 #### Sheet 容器
 - 高度: 约 50% 屏幕高度 (半屏)
-- 背景: 毛玻璃效果
-- 圆角: 顶部 20px (iOS Bottom Sheet 风格)
+- 背景: 白色
+- 圆角: 顶部 16px (iOS Bottom Sheet 风格)
 - 阴影: 0 -4px 16px rgba(0,0,0,0.15)
 - 动画: 从底部滑入 (0.3s ease-out)
 
@@ -1527,7 +1145,7 @@ reportVideo.play();
 - 高度: 56px
 - 左侧: 关闭按钮 (✕)，24x24px
 - 中间: 标题 (boost_name_cn)，如 "球起架拍"
-- 底部: 1px 分隔线
+- 底部: 1px 分隔线 (#E5E5EA)
 
 #### Video-Player
 - 宽度: 100%
@@ -1538,7 +1156,7 @@ reportVideo.play();
 
 #### Controls (控制区)
 - 高度: 80px
-- 背景: 继承毛玻璃
+- 背景: #F2F2F7 (iOS 浅灰)
 - 布局: 三个元素水平居中分布
 
 **控制按钮样式**:
@@ -1548,15 +1166,10 @@ reportVideo.play();
     width: 44px;
     height: 44px;
     border-radius: 22px;
-    background: rgba(0, 0, 0, 0.05);
+    background: #E5E5EA;
     border: none;
     font-size: 20px;
-    color: var(--color-text-secondary);
-    transition: transform 0.15s var(--ease-bounce);
-}
-
-.btn-reset:active {
-    transform: scale(0.92);
+    color: #666;
 }
 
 /* 倒计时显示 */
@@ -1564,7 +1177,7 @@ reportVideo.play();
     font-size: 32px;
     font-weight: 600;
     font-family: -apple-system, monospace;
-    color: var(--color-text-primary);
+    color: #000;
 }
 
 /* 暂停/播放按钮 */
@@ -1572,26 +1185,21 @@ reportVideo.play();
     width: 56px;
     height: 56px;
     border-radius: 28px;
-    background: var(--color-success);
+    background: #34C759;  /* iOS 绿 */
     border: none;
     font-size: 24px;
     color: white;
-    transition: transform 0.15s var(--ease-bounce);
-}
-
-.btn-pause:active {
-    transform: scale(0.92);
 }
 ```
 
-**交互行为** [UPDATED v1.3.1]:
-1. 点击箭头按钮 → 打开 Bottom Sheet (滑入动画)，开始播放视频
-2. 视频开始 → **倒计时从固定 30 秒开始倒数** (00:30)
-3. 点击暂停按钮 (⏸) → 暂停视频和倒计时，按钮变为播放 (▶) + 震动反馈
-4. 点击播放按钮 (▶) → 继续播放，按钮变回暂停 (⏸) + 震动反馈
-5. 点击重置按钮 (⟲) → 视频跳回开头，**倒计时重置为 30 秒** + 震动反馈
-6. 倒计时归零 → 视频暂停，显示 "00:00"，可重新播放
-7. 点击关闭按钮 (✕) → 关闭 Bottom Sheet (滑出动画)，停止播放
+**交互行为**:
+1. 点击箭头按钮 → 打开 Bottom Sheet，开始播放视频
+2. 视频开始 → 倒计时从视频总时长开始倒数 (如 00:28)
+3. 点击暂停按钮 (⏸) → 暂停视频和倒计时，按钮变为播放 (▶)
+4. 点击播放按钮 (▶) → 继续播放，按钮变回暂停 (⏸)
+5. 点击重置按钮 (⟲) → 视频跳回开头，倒计时重置
+6. 倒计时归零 → 视频播放完毕，可重新播放
+7. 点击关闭按钮 (✕) → 关闭 Bottom Sheet，停止播放
 8. 点击背景遮罩 → 关闭 Bottom Sheet
 
 **数据映射**:
@@ -1600,13 +1208,10 @@ reportVideo.play();
 |---------|----------|----------|
 | 标题 | recommended_boost.boost_name_cn | `usr001_mini_report.json` |
 | 视频 | recommended_boost.video | `usr001_mini_report.json` |
-| 倒计时初始值 | **固定 30 秒** | 硬编码 |
+| 倒计时初始值 | 视频时长 (video.duration) | 运行时获取 |
 
-**技术实现** [UPDATED v1.3.1]:
+**技术实现**:
 ```javascript
-// 固定倒计时时长
-const BOOST_COUNTDOWN_SECONDS = 30;
-
 // Bottom Sheet 状态
 let boostVideoSheetOpen = false;
 
@@ -1618,15 +1223,12 @@ function openBoostVideoSheet() {
 
     overlay.style.display = 'block';
     sheet.classList.add('open');
-    hapticFeedback('light');
 
     // 开始播放视频
     const video = sheet.querySelector('video');
     video.currentTime = 0;
     video.play();
-
-    // 固定 30 秒倒计时
-    startCountdown(BOOST_COUNTDOWN_SECONDS);
+    startCountdown(video.duration);
 }
 
 // 关闭 Bottom Sheet
@@ -1638,28 +1240,15 @@ function closeBoostVideoSheet() {
     sheet.classList.remove('open');
     overlay.style.display = 'none';
 
-    // 停止播放和倒计时
+    // 停止播放
     const video = sheet.querySelector('video');
     video.pause();
-    clearInterval(countdownInterval);
-}
-
-// 重置按钮
-function resetBoostVideo() {
-    const video = document.querySelector('#boost-video-sheet video');
-    video.currentTime = 0;
-    video.play();
-
-    // 重置倒计时为 30 秒
-    clearInterval(countdownInterval);
-    startCountdown(BOOST_COUNTDOWN_SECONDS);
-    hapticFeedback('medium');
 }
 
 // 倒计时
 let countdownInterval;
 function startCountdown(totalSeconds) {
-    let remaining = totalSeconds;
+    let remaining = Math.ceil(totalSeconds);
     updateCountdownDisplay(remaining);
 
     countdownInterval = setInterval(() => {
@@ -1667,9 +1256,6 @@ function startCountdown(totalSeconds) {
         updateCountdownDisplay(remaining);
         if (remaining <= 0) {
             clearInterval(countdownInterval);
-            // 倒计时结束，暂停视频
-            const video = document.querySelector('#boost-video-sheet video');
-            video.pause();
         }
     }, 1000);
 }
@@ -1694,12 +1280,6 @@ function updateCountdownDisplay(seconds) {
     background: rgba(0, 0, 0, 0.5);
     z-index: 100;
     display: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.sheet-overlay.visible {
-    opacity: 1;
 }
 
 /* Bottom Sheet 容器 */
@@ -1708,13 +1288,11 @@ function updateCountdownDisplay(seconds) {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 20px 20px 0 0;
+    background: white;
+    border-radius: 16px 16px 0 0;
     z-index: 101;
     transform: translateY(100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s ease-out;
 }
 
 .bottom-sheet.open {
@@ -1745,7 +1323,7 @@ function updateCountdownDisplay(seconds) {
 - `error_videos`: 错误示范视频路径
 - `correct_videos`: 正确示范视频路径
 
-**UI 显示映射**:
+**UI 显示映射** [UPDATED]:
 
 | UI 元素 | 数据来源 | 格式 |
 |---------|----------|------|
@@ -1762,7 +1340,7 @@ function updateCountdownDisplay(seconds) {
 | Q4 | 转体控制-左手先收 | 我有没有挥拍前左手先收回? |
 | Q5 | 动力源头-只拉手引拍 | 我有没有引拍只用手往后拉拍? |
 
-### Mini Report 数据字段说明 [UPDATED v1.3.1]
+### Mini Report 数据字段说明 [NEW]
 
 从 `usr001_mini_report.json` 读取，结构如下：
 
@@ -1783,31 +1361,24 @@ function updateCountdownDisplay(seconds) {
     "boost_id": "BOOST-23",
     "boost_name_cn": "肘肋空间感训练",
     "description": "通过在腋下创造虚拟空间...",
-    "instruction": "1. 腋下夹个大西瓜...",
-    "goal": "建立健康的击球空间...",
-    "body_part": "手臂与躯干",      // 保留但不再用于标签
-    "difficulty": "入门",            // 保留但不再用于标签
-    "target_atom": "DM3-IS08-AT45",
-    "video": "BO_6102_30-01_09_被挤到解决办法...mp4",
-    "scene": "home",                // [NEW] 练习场景
-    "equipment": "equip-free"       // [NEW] 器材需求
+    "difficulty": "入门",
+    "body_part": "手臂与躯干",
+    "video": "BO_6102_30-01_09_被挤到解决办法...mp4"
   }
 }
 ```
 
-**PG-3 数据映射** [UPDATED v1.3.1]:
+**PG-3 数据映射**:
 
 | UI 组件 | 数据来源 | 说明 |
 |---------|----------|------|
-| 用户视频 | `state.videoUrl` | 自动循环播放, 0.75x 慢放 |
 | Check Tips 统计 | `atoms[].has_error` | 统计 ✓ 和 ✕ 的数量 |
 | Check Tips 列表 | `atoms[].atom_name_cn` + `has_error` | 5 项答案列表 |
 | Summary 文字 | `summary.insight` | 洞察总结 |
 | Boost 标题 | `recommended_boost.boost_name_cn` | 练习名称 |
 | Boost 描述 | `recommended_boost.description` | 练习描述 |
-| Boost 场景标签 | `recommended_boost.scene` | 🏠 居家 / 🎾 球场 / 💪 健身房 |
-| Boost 器材标签 | `recommended_boost.equipment` | 🎯 徒手 / 🏸 需球拍 / 🎾 需网球 |
-| Boost 视频 | `recommended_boost.video` | 视频路径 |
+| Boost 标签 | `difficulty` + `body_part` | 两个灰色标签 |
+| Boost 视频 | `recommended_boost.video` | 视频占位符 |
 
 **统计计算**:
 ```javascript
@@ -1818,7 +1389,7 @@ const correctCount = atoms.filter(a => !a.has_error).length; // ✕ 没问题
 
 ---
 
-### 完整数据映射总表
+### 完整数据映射总表 [NEW]
 
 以下表格汇总了所有页面组件的数据来源和字段映射：
 
@@ -1875,20 +1446,20 @@ const correctCount = atoms.filter(a => !a.has_error).length; // ✕ 没问题
 }
 ```
 
-#### PG-3 Mini Report 页 - 数据映射 [UPDATED v1.3.1]
+#### PG-3 Mini Report 页 - 数据映射
 
 | UI 组件 | 数据来源 | 字段路径 | 示例值 |
 |---------|----------|----------|--------|
 | Header 标题 | 硬编码 | - | "Mini Report" |
-| 用户视频 | 运行时 | `state.videoUrl` | blob:xxx (自动循环, 0.75x) |
+| 用户视频预览 | 运行时 | `state.videoUrl` | blob:xxx |
 | Check Tips ✓数量 | 运行时计算 | `atoms.filter(a => a.has_error).length` | 4 |
 | Check Tips ✕数量 | 运行时计算 | `atoms.filter(a => !a.has_error).length` | 1 |
 | Check Tips 列表 | JSON + 运行时 | `atoms[].atom_name_cn` + `atoms[].has_error` | "✓ 被挤着打" |
 | Summary 文字 | JSON | `summary.insight` | "Kim展现了优异的协调性..." |
 | Boost 标题 | JSON | `recommended_boost.boost_name_cn` | "肘肋空间感训练" |
 | Boost 描述 | JSON | `recommended_boost.description` | "通过在腋下创造虚拟空间..." |
-| Boost 场景标签 | JSON | `recommended_boost.scene` | "🏠 居家" |
-| Boost 器材标签 | JSON | `recommended_boost.equipment` | "🎯 徒手" |
+| Boost 难度标签 | JSON | `recommended_boost.difficulty` | "入门" |
+| Boost 部位标签 | JSON | `recommended_boost.body_part` | "手臂与躯干" |
 | Boost 视频路径 | JSON | `recommended_boost.video` | "BO_6102_30-01_09_...mp4" |
 
 **PG-3 报告数据来源**: `usr001_mini_report.json`
@@ -1914,20 +1485,18 @@ const correctCount = atoms.filter(a => !a.has_error).length; // ✕ 没问题
     "body_part": "手臂与躯干",
     "difficulty": "入门",
     "target_atom": "DM3-IS08-AT45",
-    "video": "BO_6102_30-01_09_被挤到解决办法_球起架拍球落找球_boost.mp4",
-    "scene": "home",           // [NEW v1.3.1]
-    "equipment": "equip-free"  // [NEW v1.3.1]
+    "video": "BO_6102_30-01_09_被挤到解决办法_球起架拍球落找球_boost.mp4"
   }
 }
 ```
 
-#### Sheet-BoostVideo - 数据映射 [UPDATED v1.3.1]
+#### Sheet-BoostVideo - 数据映射
 
 | UI 组件 | 数据来源 | 字段路径 | 示例值 |
 |---------|----------|----------|--------|
-| Sheet 标题 | JSON | `recommended_boost.boost_name_cn` | "肘肋空间感训练" |
+| Sheet 标题 | JSON | `recommended_boost.boost_name_cn` | "球起架拍" |
 | 视频文件 | JSON | `recommended_boost.video` | "BO_6102_...mp4" |
-| 倒计时初始值 | **固定值** | 硬编码 30 秒 | 30 (秒) |
+| 倒计时初始值 | 运行时 | `video.duration` | 28 (秒) |
 
 ---
 
@@ -1951,19 +1520,19 @@ const correctCount = atoms.filter(a => !a.has_error).length; // ✕ 没问题
 |------|------|------|
 | currentPage | string | 当前页面: 'prepare' / 'upload' / 'trim' / 'loading' / 'mcq' / 'report-loading' / 'report' |
 | raterName | string | 测试者名字 |
-| videoFile | File | 用户上传的视频文件 |
-| videoUrl | string | 视频 ObjectURL |
-| trimRange | object | 选中范围 {start, end} |
-| frameThumbnails | array | 帧缩略图 base64 数组 |
+| videoFile | File | 用户上传的视频文件 [NEW] |
+| videoUrl | string | 视频 ObjectURL [NEW] |
+| trimRange | object | 选中范围 {start, end} [NEW] |
+| frameThumbnails | array | 帧缩略图 base64 数组 [NEW] |
 | currentQuestionIndex | number | 当前问题索引 (0-4) |
 | answers | array | 回答数组 [{question_id, atom_id, has_error}] |
 | startTime | timestamp | 开始时间 (MCQ 开始时记录) |
 | endTime | timestamp | 结束时间 |
-| checkTipsExpanded | boolean | Check Tips 卡片展开状态 (默认 false) |
-| miniReport | object | Mini Report 数据 {atoms, summary, recommended_boost} |
-| boostVideoSheetOpen | boolean | Boost Video Bottom Sheet 展开状态 (默认 false) |
-| boostVideoPlaying | boolean | Boost 视频播放状态 |
-| boostCountdown | number | Boost 视频倒计时剩余秒数 |
+| checkTipsExpanded | boolean | Check Tips 卡片展开状态 (默认 false) [NEW] |
+| miniReport | object | Mini Report 数据 {atoms, summary, recommended_boost} [NEW] |
+| boostVideoSheetOpen | boolean | Boost Video Bottom Sheet 展开状态 (默认 false) [NEW] |
+| boostVideoPlaying | boolean | Boost 视频播放状态 [NEW] |
+| boostCountdown | number | Boost 视频倒计时剩余秒数 [NEW] |
 
 ---
 
@@ -1972,72 +1541,59 @@ const correctCount = atoms.filter(a => !a.has_error).length; // ✕ 没问题
 ### 功能验收
 - [ ] PG-1: 可以输入测试者名字
 - [ ] PG-1: 输入名字后"开始测试"按钮变为可用
-- [ ] PG-1a: 可以上传视频文件
-- [ ] PG-1a: 视频时长验证 (>= 5秒)
-- [ ] PG-1a: 上传后**自动跳转到裁剪页** (无需点击按钮) [UPDATED v1.3]
-- [ ] PG-1b: 显示视频预览
-- [ ] PG-1b: 显示帧缩略图条
-- [ ] PG-1b: 可以拖动选择 5 秒范围
-- [ ] PG-1b: 可以播放预览选中片段
-- [ ] PG-1b: 可以点击刷新返回上传页重选视频
-- [ ] PG-1c: 显示加载动画
-- [ ] PG-1c: 自动跳转到 MCQ 页
-- [ ] PG-2: 显示用户视频 (16:9, 220px, **0.75x 慢放**) [UPDATED v1.3.1]
-- [ ] PG-2: 显示参考视频 (9:16, 280px) 带 ✓/✕ 切换按钮
-- [ ] PG-2: 默认显示错误示范视频
-- [ ] PG-2: 显示问题标签 ({dimension_cn}-{atom_name_cn})
-- [ ] PG-2: 显示问题文字 (我有没有{description}?)
+- [ ] PG-1a: 可以上传视频文件 [NEW]
+- [ ] PG-1a: 视频时长验证 (>= 5秒) [NEW]
+- [ ] PG-1a: 上传后下一步按钮变为可用 [NEW]
+- [ ] PG-1b: 显示视频预览 [NEW]
+- [ ] PG-1b: 显示帧缩略图条 [NEW]
+- [ ] PG-1b: 可以拖动选择 5 秒范围 [NEW]
+- [ ] PG-1b: 可以播放预览选中片段 [NEW]
+- [ ] PG-1c: 显示加载动画 [NEW]
+- [ ] PG-1c: 自动跳转到 MCQ 页 [NEW]
+- [ ] PG-2: 显示用户视频 (16:9, 220px) [UPDATED]
+- [ ] PG-2: 显示参考视频 (9:16, 280px) 带 ✓/✕ 切换按钮 [UPDATED]
+- [ ] PG-2: 默认显示错误示范视频 [UPDATED]
+- [ ] PG-2: 显示问题标签 ({dimension_cn}-{atom_name_cn}) [UPDATED]
+- [ ] PG-2: 显示问题文字 (我有没有{description}?) [UPDATED]
 - [ ] PG-2: 点击"✓ 有"或"✕ 没有"后自动跳转下一题
-- [ ] PG-2.5: 显示 "Generating your report..." 等待页
-- [ ] PG-2.5: 自动跳转到 Mini Report 页
-- [ ] PG-3: 显示用户视频 (**自动循环播放, 0.75x 慢放**) [UPDATED v1.3.1]
-- [ ] PG-3: 显示 Check Tips 卡片 (✓ count / ✕ count)
-- [ ] PG-3: Check Tips 可展开/收起显示5题答案
-- [ ] PG-3: 显示 Summary 洞察文字
-- [ ] PG-3: 显示 Boost 推荐练习卡片
-- [ ] PG-3: Boost 标签显示 **🏠 scene + 🎯 equipment** [UPDATED v1.3.1]
-- [ ] PG-3: Boost 卡片有箭头按钮 (→)
-- [ ] PG-3: 点击箭头打开 Boost Video Bottom Sheet
-- [ ] PG-3: 点击 Done 按钮回到 PG-1a
+- [ ] PG-2.5: 显示 "Generating your report..." 等待页 [NEW]
+- [ ] PG-2.5: 自动跳转到 Mini Report 页 [NEW]
+- [ ] PG-3: 显示用户视频预览 (小尺寸) [UPDATED]
+- [ ] PG-3: 显示 Check Tips 卡片 (✓ count / ✕ count) [UPDATED]
+- [ ] PG-3: Check Tips 可展开/收起显示5题答案 [UPDATED]
+- [ ] PG-3: 显示 Summary 洞察文字 [UPDATED]
+- [ ] PG-3: 显示 Boost 推荐练习卡片 [UPDATED]
+- [ ] PG-3: Boost 卡片有箭头按钮 (→) [NEW]
+- [ ] PG-3: 点击箭头打开 Boost Video Bottom Sheet [NEW]
+- [ ] PG-3: 点击 Done 按钮回到 PG-1a [UPDATED]
 
-### Bottom Sheet 验收 [UPDATED v1.3.1]
+### Bottom Sheet 验收 [NEW]
 - [ ] Sheet: 从底部滑入动画 (0.3s)
 - [ ] Sheet: 背景遮罩变暗 50%
-- [ ] Sheet: 顶部圆角 20px (毛玻璃效果)
+- [ ] Sheet: 顶部圆角 16px
 - [ ] Sheet: 显示 Boost 标题 (boost_name_cn)
 - [ ] Sheet: 视频自动播放
-- [ ] Sheet: **倒计时固定从 30 秒开始** (非视频时长)
+- [ ] Sheet: 显示倒计时 (从视频总时长开始倒数)
 - [ ] Sheet: 暂停/播放按钮可切换
-- [ ] Sheet: 重置按钮可重置为 30 秒
+- [ ] Sheet: 重置按钮可重新播放
 - [ ] Sheet: 点击 ✕ 关闭弹窗
 - [ ] Sheet: 点击背景遮罩关闭弹窗
 
-### 视觉验收 [UPDATED v1.3.2]
-- [ ] **强制浅色模式**: 无论系统设置，始终显示浅色主题
-- [ ] **青墨绿配色**: 使用低饱和度色彩 (主色 #3A5F5A, 成功 #5A8F7A, 危险 #B87070)
-- [ ] **Mesh Gradient 背景**: 页面背景有弥散渐变光斑效果
-- [ ] **毛玻璃卡片**: 卡片有半透明 + 模糊效果
-- [ ] **顶部间距**: 标题不贴边，有 20px+ 基础间距
-- [ ] 卡片有圆角 (16px) 和柔和阴影
-- [ ] 按钮有圆角 (12px/24px) 和适当的 padding
+### 样式验收
+- [ ] 整体风格符合 iOS Human Interface Guidelines
+- [ ] 使用 iOS 系统颜色 (#007AFF, #34C759, #FF3B30)
+- [ ] 卡片有圆角 (12px) 和阴影
+- [ ] 按钮有圆角 (8px/22px) 和适当的 padding
 - [ ] 响应式布局 (桌面端左右分栏，移动端上下排列)
-- [ ] 适配 iPhone 安全区域 (Safe Area)
-- [ ] 浮动按钮位于右下角
-
-### 交互验收 [NEW v1.3]
-- [ ] **按钮按压缩放**: 点击按钮有 scale(0.96) 缩放效果
-- [ ] **弹性动画**: 使用 cubic-bezier(0.34, 1.56, 0.64, 1) 缓动
-- [ ] **触觉反馈**: 关键操作触发震动 (支持的设备)
-- [ ] **点击音效**: 可选的点击音效 (首次交互后启用)
+- [ ] 适配 iPhone 安全区域 (Safe Area) [NEW]
+- [ ] 浮动按钮位于右下角 [NEW]
 
 ### 代码验收
 - [ ] 单个 HTML 文件，可直接在浏览器打开
 - [ ] 无外部依赖
 - [ ] 代码结构清晰，有注释
-- [ ] 使用 Canvas API 提取视频帧
-- [ ] 使用 File API 处理视频上传
-- [ ] 强制浅色模式 (`color-scheme: light only`)
-- [ ] backdrop-filter 降级处理
+- [ ] 使用 Canvas API 提取视频帧 [NEW]
+- [ ] 使用 File API 处理视频上传 [NEW]
 
 ---
 
@@ -2056,7 +1612,7 @@ const correctCount = atoms.filter(a => !a.has_error).length; // ✕ 没问题
 │  │   PG-1a     │ ◄─────────────┬───────────────────────────────┐      │
 │  │  视频上传   │               │ 点击刷新                       │      │
 │  └──────┬──────┘               │                               │      │
-│         │ 上传视频 (自动跳转)   │ [UPDATED v1.3]                │      │
+│         │ 上传视频 + 下一步     │                               │      │
 │         ▼                      │                               │      │
 │  ┌─────────────┐               │                               │      │
 │  │   PG-1b     │ ──────────────┘                               │      │
@@ -2078,18 +1634,17 @@ const correctCount = atoms.filter(a => !a.has_error).length; // ✕ 没问题
 │         ├──────────────────────┘                               │      │
 │         ▼                                                      │      │
 │  ┌─────────────┐                                               │      │
-│  │   PG-2.5    │                                               │      │
+│  │   PG-2.5    │ [NEW]                                         │      │
 │  │  报告等待   │                                               │      │
 │  └──────┬──────┘                                               │      │
 │         │ 自动 (2-3秒)                                          │      │
 │         ▼                                                      │      │
 │  ┌─────────────┐                                               │      │
-│  │   PG-3      │                                               │      │
+│  │   PG-3      │ [UPDATED]                                     │      │
 │  │ Mini Report │                                               │      │
 │  └──────┬──────┘                                               │      │
 │         │                                                      │      │
 │         ├── 展开/收起 Check Tips → 切换 checkTipsExpanded      │      │
-│         ├── 点击 Boost 箭头 → 打开 Sheet-BoostVideo            │      │
 │         └── 点击 Done → 清空状态, 回到 PG-1a ──────────────────┘      │
 │                                                                       │
 └───────────────────────────────────────────────────────────────────────┘
@@ -2109,16 +1664,9 @@ const correctCount = atoms.filter(a => !a.has_error).length; // ✕ 没问题
 5. 可以直接在浏览器中打开运行
 
 **特别注意**：
-1. **强制浅色模式** - 使用 `color-scheme: light only` [NEW v1.3]
-2. **青墨绿配色** - 使用低饱和度色彩系统，与 APP 主色统一 [UPDATED v1.3.2]
-3. **Mesh Gradient 背景** - 多层 radial-gradient 叠加，青墨绿色调 [UPDATED v1.3.2]
-4. **毛玻璃效果** - 使用 backdrop-filter: blur() [NEW v1.3]
-5. **Apple 风格动效** - 按压缩放 + 弹性缓动 [NEW v1.3]
-6. **顶部间距修复** - 使用 calc(20px + env(...)) [NEW v1.3]
-7. **视频上传自动跳转** - 移除手动下一步按钮 [NEW v1.3]
-8. 参考视频使用占位符 (灰色方块 + 文字说明)，用户视频使用实际上传的文件
-9. 导出 JSON 使用 Blob + URL.createObjectURL 实现下载
-10. 移动端适配使用媒体查询，左右分栏变为上下排列
-11. 帧条组件使用 Canvas API 提取视频帧缩略图
-12. 视频裁剪使用拖动手势选择 5 秒范围
-13. 适配 iOS Safe Area
+1. 参考视频使用占位符 (灰色方块 + 文字说明)，用户视频使用实际上传的文件
+2. 导出 JSON 使用 Blob + URL.createObjectURL 实现下载
+3. 移动端适配使用媒体查询，左右分栏变为上下排列
+4. 帧条组件使用 Canvas API 提取视频帧缩略图 [NEW]
+5. 视频裁剪使用拖动手势选择 5 秒范围 [NEW]
+6. 适配 iOS Safe Area [NEW]

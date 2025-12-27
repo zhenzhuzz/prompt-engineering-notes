@@ -1,106 +1,70 @@
 执行 Git 提交流程：
 
-## 步骤
+## 核心步骤（严格执行）
 
 1. `git status` 查看所有更改
-2. `git diff --stat` 查看改动概览
-3. `git log -3 --oneline` 查看最近提交风格
-4. `git add` 相关文件
-5. 生成 commit message 并提交
+2. `git add` 相关文件（只 stage 与本次提交相关的文件）
+3. `git diff --cached --stat` 确认待提交内容
+4. 生成 commit message → 写入 `.git/COMMIT_EDITMSG`
+5. 输出摘要：**标题 + 行数 + staged 文件列表**
+6. 用户确认后执行 `git commit -F .git/COMMIT_EDITMSG`
 
-## Commit Message 规范
+## 禁止事项
 
-- 标题和描述用**简体中文**
-- 详细汇总所有更改（便于日后回顾）
-- 用 **ASCII diagram** 描述结构、流程、布局、逻辑
-- 用 **emoji** 增加可读性和趣味性
+- ❌ 不要执行 `git log` 查看历史（除非用户要求）
+- ❌ 不要执行详细的 `git diff`（除非用户要求）
+- ❌ 不要修改 .gitignore 或做其他"顺便清理"
+- ❌ 不要在 commit 流程中做与提交无关的操作
 
-## Emoji 类型前缀
+## Commit Message 分级（根据改动规模选择）
 
-| Emoji | 类型 | 说明 |
-|-------|------|------|
-| 🚀 | feat | 新功能 |
-| 🐛 | fix | Bug 修复 |
-| 📚 | docs | 文档更新 |
-| 🔧 | chore | 杂项/配置 |
-| ♻️ | refactor | 重构 |
-| 🎨 | style | 样式/格式 |
-| ✅ | test | 测试 |
-| 📦 | build | 构建/打包 |
-
-## 详细程度要求
-
-### 1. 业务价值说明（给非技术老板看）
-
-每个 commit 必须包含简短的业务价值说明：
-- **解决了什么问题**: 之前的痛点是什么
-- **实现了什么功能**: 对用户/产品的价值
-- **提出了什么方案**: 用什么方法解决
-
-用非技术语言，1-3 句话说清楚。
-
-### 2. 变更分类总结
-
-按类型分组描述：
-- **新增**: 新加了什么文件/功能
-- **修改**: 改了什么，为什么改
-- **删除**: 删了什么，为什么删
-- **重构**: 结构怎么变化
-
-### 3. ASCII diagram（必须，如适用）
-
-展示结构变化、数据流、重构前后对比等。
-
-## ASCII diagram 示例
-
-### 示例 A: 文件重命名/重构
+### Level 1: 小改动（1-5 文件，单一功能）
 
 ```
-文件重构:
-Before                    After                   变化
-────────────────────────────────────────────────────────
-atom_item.json        →  atom.json              -38%
-dimension_item.json   →  dimension.json         -49%
-st_mcq_questions.json →  mcq_questions.json     -89%
+[emoji] [类型](scope): 一句话标题
+
+• 改动点 1
+• 改动点 2
+• 改动点 3
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
 ```
 
-### 示例 B: 结构变化对比
-
+**示例**:
 ```
-┌─────────────────────────────────────────┐
-│  重构前 (冗余包装)                        │
-├─────────────────────────────────────────┤
-│  {                                      │
-│    "_schema": {...},    ← 删除          │
-│    "_example": {        ← 提升为根对象   │
-│      实际字段...                         │
-│    },                                   │
-│    "_notes": {...}      ← 删除          │
-│  }                                      │
-└─────────────────────────────────────────┘
-                    │
-                    ▼
-┌─────────────────────────────────────────┐
-│  重构后 (纯规范)                         │
-├─────────────────────────────────────────┤
-│  {                                      │
-│    "field1": "{placeholder}",           │
-│    "field2": "{placeholder}"            │
-│  }                                      │
-└─────────────────────────────────────────┘
+🐛 fix(api): 修复 CORS 跨域问题
+
+• server.js: 添加 Vercel 域名到白名单
+• communication.ts: 支持 VITE_BACKEND_URL 环境变量
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
 ```
 
-### 示例 C: 数据流变化
+### Level 2: 中等改动（6-15 文件，多个相关功能）
 
 ```
-数据流:
-┌──────────┐     ┌──────────┐     ┌──────────┐
-│  YAML    │────▶│  Sync    │────▶│  JSON    │
-│  源文件   │     │  脚本    │     │  生成    │
-└──────────┘     └──────────┘     └──────────┘
+[emoji] [类型](scope): 一句话标题
+
+**变更摘要**:
+• 分类 1: 描述
+• 分类 2: 描述
+
+**文件清单**:
+path/to/file1.js  # 简短说明
+path/to/file2.ts  # 简短说明
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
 ```
 
-## Commit Message 格式模板
+### Level 3: 大改动（15+ 文件 或 重大重构/新功能）
+
+使用完整模板：业务价值 + 变更摘要 + ASCII diagram + 文件清单
 
 ```
 [emoji] [类型](scope): 一句话标题
@@ -138,62 +102,28 @@ st_mcq_questions.json →  mcq_questions.json     -89%
 Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
 ```
 
-## 完整示例
+## Emoji 类型前缀
 
-```
-♻️ refactor(spec): 极简化 _spec 规范文件 - 删除冗余元信息 + 占位符格式
-
-═══════════════════════════════════════════════════════════════════
-🎯 业务价值
-═══════════════════════════════════════════════════════════════════
-
-> **一句话**: 让数据规范文件更简洁易懂，开发效率提升，维护成本降低
-
-• 解决问题: 规范文件包含大量无用的元信息，开发时难以快速找到需要的字段
-• 实现功能: 规范文件现在只展示"格式模板"，一眼就能看清数据结构
-• 采用方案: 删除 _schema/_example/_notes 包装层，用占位符表示字段格式
-
-═══════════════════════════════════════════════════════════════════
-📋 变更摘要
-═══════════════════════════════════════════════════════════════════
-
-重构 7 个 _spec 规范文件:
-• 删除冗余的 _schema、_example、_notes 元信息层
-• 采用 {placeholder} 占位符格式表示字段规范
-• 文件命名简化：去掉 _item 和 st_ 前缀
-
-═══════════════════════════════════════════════════════════════════
-🏗️ 结构变化
-═══════════════════════════════════════════════════════════════════
-
-文件重构:
-Before                    After                   变化
-────────────────────────────────────────────────────────
-atom_item.json        →  atom.json              -38%
-dimension_item.json   →  dimension.json         -49%
-st_mcq_questions.json →  mcq_questions.json     -89%
-st_mini_report.json   →  mini_report.json       -83%
-
-总计: -330 行冗余代码
-
-═══════════════════════════════════════════════════════════════════
-📁 文件清单
-═══════════════════════════════════════════════════════════════════
-
-_spec/
-├── atom.json           # 错误原子规范
-├── dimension.json      # 维度规范
-├── issue.json          # 子项规范
-├── boost.json          # 训练规范
-├── mcq_questions.json  # 问题列表格式
-├── mcq_response.json   # 用户回答格式
-└── mini_report.json    # 诊断报告格式
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-
-Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
-```
+| Emoji | 类型 | 说明 |
+|-------|------|------|
+| 🚀 | feat | 新功能 |
+| 🐛 | fix | Bug 修复 |
+| 📚 | docs | 文档更新 |
+| 🔧 | chore | 杂项/配置 |
+| ♻️ | refactor | 重构 |
+| 🎨 | style | 样式/格式 |
+| ✅ | test | 测试 |
+| 📦 | build | 构建/打包 |
 
 ## 注意事项
 
+- 如果 push 失败 (HTTP 408)，先诊断是否有大文件，不要盲目重试
+- 参考 `_knowledge/KNOW_git-large-file-push-trap-与正确工作流.md`
 - **业务价值部分用老板能听懂的语言**，避免技术术语
+
+## 技术说明：为什么使用临时文件？
+
+使用 `git commit -F .git/COMMIT_EDITMSG` 而非 heredoc 的原因：
+- ✅ 支持任意特殊字符（单引号、反引号、美元符等）
+- ✅ 不需要转义
+- ✅ git 自动管理文件生命周期
